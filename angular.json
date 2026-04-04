@@ -70,7 +70,25 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "coverage": true,
+            "coverageReporters": ["lcov", "text-summary"],
+            "coverageExclude": [
+              "src/main.ts",
+              "src/environments/**",
+              "src/**/*.spec.ts",
+              "src/**/*.html",
+              "src/app/app.routes.ts",
+              "src/app/features/dashboard/**"
+            ],
+            "coverageThresholds": {
+              "lines": 80,
+              "functions": 80,
+              "branches": 80,
+              "statements": 80
+            }
+          }
         }
       }
     }
