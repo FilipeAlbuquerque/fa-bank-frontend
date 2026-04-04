@@ -62,11 +62,11 @@ export class LoginComponent {
       error: (err) => {
         this.loading.set(false);
         if (err.status === 401) {
-          this.errorMessage.set('Credenciais inválidas. Verifique o utilizador e password.');
+          this.errorMessage.set('Invalid credentials. Please check your username and password.');
         } else if (err.status === 423) {
-          this.errorMessage.set('Conta temporariamente bloqueada. Tente novamente em 1 hora.');
+          this.errorMessage.set('Account temporarily locked. Please try again in 1 hour.');
         } else {
-          this.errorMessage.set('Erro de ligação ao servidor. Tente novamente.');
+          this.errorMessage.set('Unable to connect to the server. Please try again.');
         }
       },
     });

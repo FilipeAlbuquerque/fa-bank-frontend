@@ -14,18 +14,18 @@
       <div class="brand-divider"></div>
 
       <p class="brand-description">
-        Banca privada com tradição familiar desde o primeiro dia.
-        Segurança, discrição e excelência ao seu serviço.
+        Private banking with family heritage since day one.
+        Security, discretion and excellence at your service.
       </p>
 
       <div class="brand-features">
         <div class="feature-item">
           <lucide-icon [img]="icons.ShieldCheck" size="18" class="feature-icon" />
-          <span>Segurança de nível bancário</span>
+          <span>Bank-grade security</span>
         </div>
         <div class="feature-item">
           <lucide-icon [img]="icons.TrendingUp" size="18" class="feature-icon" />
-          <span>Gestão de patrimônio avançada</span>
+          <span>Advanced wealth management</span>
         </div>
       </div>
 
@@ -44,8 +44,8 @@
     <div class="form-container animate-slide-up">
 
       <div class="form-header">
-        <h2 class="form-title">Acesso à Conta</h2>
-        <p class="form-subtitle">Introduza as suas credenciais para continuar</p>
+        <h2 class="form-title">Account Access</h2>
+        <p class="form-subtitle">Enter your credentials to continue</p>
       </div>
 
       <!-- Error message -->
@@ -60,7 +60,7 @@
 
         <!-- Username -->
         <div class="field-group">
-          <label class="field-label" for="username">Utilizador</label>
+          <label class="field-label" for="username">Username</label>
           <div class="input-wrapper" [class.input-error]="username.invalid && username.touched">
             <lucide-icon [img]="icons.User" size="16" class="input-icon" />
             <input
@@ -68,15 +68,15 @@
               id="username"
               type="text"
               formControlName="username"
-              placeholder="nome de utilizador"
+              placeholder="your username"
               autocomplete="username"
               class="field-input"
             />
           </div>
           @if (username.invalid && username.touched) {
             <span class="field-error">
-              @if (username.errors?.['required']) { Campo obrigatório }
-              @else if (username.errors?.['minlength']) { Mínimo 3 caracteres }
+              @if (username.errors?.['required']) { Required field }
+              @else if (username.errors?.['minlength']) { Minimum 3 characters }
             </span>
           }
         </div>
@@ -99,8 +99,8 @@
           </div>
           @if (password.invalid && password.touched) {
             <span class="field-error">
-              @if (password.errors?.['required']) { Campo obrigatório }
-              @else if (password.errors?.['minlength']) { Mínimo 6 caracteres }
+              @if (password.errors?.['required']) { Required field }
+              @else if (password.errors?.['minlength']) { Minimum 6 characters }
             </span>
           }
         </div>
@@ -114,9 +114,9 @@
         >
           @if (loading()) {
             <span class="btn-spinner"></span>
-            <span>A autenticar...</span>
+            <span>Authenticating...</span>
           } @else {
-            <span>Entrar</span>
+            <span>Sign In</span>
           }
         </button>
 
@@ -124,7 +124,7 @@
 
       <div class="form-footer">
         <span class="footer-text">
-          Acesso restrito a clientes autorizados
+          Restricted access — authorised clients only
         </span>
       </div>
 
