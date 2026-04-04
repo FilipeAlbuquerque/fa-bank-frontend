@@ -1,10 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter, Router, UrlTree } from '@angular/router';
+import { provideRouter, UrlTree } from '@angular/router';
 import { authGuard } from './auth.guard';
 import { AuthService } from '../services/auth.service';
 
 describe('authGuard', () => {
-  let router: Router;
   let authServiceMock: { hasToken: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
@@ -16,7 +15,6 @@ describe('authGuard', () => {
         { provide: AuthService, useValue: authServiceMock },
       ],
     });
-    router = TestBed.inject(Router);
   });
 
   const runGuard = () =>
