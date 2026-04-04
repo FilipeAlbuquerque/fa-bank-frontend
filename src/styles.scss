@@ -1,1 +1,55 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import 'primeicons/primeicons.css';
+
+/* ── Global reset ─────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #0a0a0a;
+  color: #f5f5f5;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #B8860B;
+  border-radius: 3px;
+}
+
+/* ── Selection ────────────────────────────────── */
+::selection {
+  background-color: rgba(184, 134, 11, 0.3);
+  color: #f5f5f5;
+}
+
+/* ── PrimeNG overrides ────────────────────────── */
+.p-inputtext {
+  background: transparent !important;
+  border-color: rgba(184, 134, 11, 0.4) !important;
+  color: #f5f5f5 !important;
+
+  &:focus {
+    border-color: #C9A227 !important;
+    box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.2) !important;
+  }
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.3) !important;
+  }
+}

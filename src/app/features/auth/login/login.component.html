@@ -1,0 +1,134 @@
+<div class="login-wrapper">
+
+  <!-- ── Left panel: branding ──────────────────────────── -->
+  <aside class="login-brand">
+    <div class="brand-content">
+
+      <div class="brand-logo">
+        <lucide-icon [img]="icons.Building2" size="42" class="logo-icon" />
+      </div>
+
+      <h1 class="brand-name">FA Bank</h1>
+      <p class="brand-tagline">Fragoso de Albuquerque</p>
+
+      <div class="brand-divider"></div>
+
+      <p class="brand-description">
+        Banca privada com tradição familiar desde o primeiro dia.
+        Segurança, discrição e excelência ao seu serviço.
+      </p>
+
+      <div class="brand-features">
+        <div class="feature-item">
+          <lucide-icon [img]="icons.ShieldCheck" size="18" class="feature-icon" />
+          <span>Segurança de nível bancário</span>
+        </div>
+        <div class="feature-item">
+          <lucide-icon [img]="icons.TrendingUp" size="18" class="feature-icon" />
+          <span>Gestão de patrimônio avançada</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Decorative elements -->
+    <div class="brand-decoration">
+      <div class="deco-circle deco-1"></div>
+      <div class="deco-circle deco-2"></div>
+      <div class="deco-line"></div>
+    </div>
+  </aside>
+
+  <!-- ── Right panel: login form ───────────────────────── -->
+  <main class="login-form-panel">
+    <div class="form-container animate-slide-up">
+
+      <div class="form-header">
+        <h2 class="form-title">Acesso à Conta</h2>
+        <p class="form-subtitle">Introduza as suas credenciais para continuar</p>
+      </div>
+
+      <!-- Error message -->
+      @if (errorMessage()) {
+        <div class="error-banner animate-fade-in">
+          <span class="error-dot"></span>
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="form-fields">
+
+        <!-- Username -->
+        <div class="field-group">
+          <label class="field-label" for="username">Utilizador</label>
+          <div class="input-wrapper" [class.input-error]="username.invalid && username.touched">
+            <lucide-icon [img]="icons.User" size="16" class="input-icon" />
+            <input
+              pInputText
+              id="username"
+              type="text"
+              formControlName="username"
+              placeholder="nome de utilizador"
+              autocomplete="username"
+              class="field-input"
+            />
+          </div>
+          @if (username.invalid && username.touched) {
+            <span class="field-error">
+              @if (username.errors?.['required']) { Campo obrigatório }
+              @else if (username.errors?.['minlength']) { Mínimo 3 caracteres }
+            </span>
+          }
+        </div>
+
+        <!-- Password -->
+        <div class="field-group">
+          <label class="field-label" for="password">Password</label>
+          <div class="input-wrapper" [class.input-error]="password.invalid && password.touched">
+            <lucide-icon [img]="icons.Lock" size="16" class="input-icon" />
+            <p-password
+              inputId="password"
+              formControlName="password"
+              placeholder="••••••••"
+              [feedback]="false"
+              [toggleMask]="true"
+              styleClass="w-full"
+              inputStyleClass="field-input pl-10"
+              autocomplete="current-password"
+            />
+          </div>
+          @if (password.invalid && password.touched) {
+            <span class="field-error">
+              @if (password.errors?.['required']) { Campo obrigatório }
+              @else if (password.errors?.['minlength']) { Mínimo 6 caracteres }
+            </span>
+          }
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="loading()"
+          [class.loading]="loading()"
+        >
+          @if (loading()) {
+            <span class="btn-spinner"></span>
+            <span>A autenticar...</span>
+          } @else {
+            <span>Entrar</span>
+          }
+        </button>
+
+      </form>
+
+      <div class="form-footer">
+        <span class="footer-text">
+          Acesso restrito a clientes autorizados
+        </span>
+      </div>
+
+    </div>
+  </main>
+
+</div>
