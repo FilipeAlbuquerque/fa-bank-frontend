@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
@@ -15,6 +15,7 @@ import { AuthService } from '../../../core/services/auth.service';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    RouterLink,
     InputTextModule,
     PasswordModule,
     ButtonModule,

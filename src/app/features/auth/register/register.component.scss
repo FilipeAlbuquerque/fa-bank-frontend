@@ -1,0 +1,396 @@
+$gold:       #C9A227;
+$gold-dark:  #B8860B;
+$gold-light: #D4AF37;
+$blood:      #8B0000;
+$black:      #0a0a0a;
+$surface:    #141414;
+$surface-2:  #1a1a1a;
+$text:       #f0f0f0;
+$text-muted: rgba(240, 240, 240, 0.45);
+$border:     rgba(201, 162, 39, 0.22);
+
+// ── Wrapper ───────────────────────────────────────────────
+.register-wrapper {
+  min-height: 100vh;
+  background: $black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  position: relative;
+
+  // Subtle radial glow behind the card
+  &::before {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(184, 134, 11, 0.055) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+}
+
+// ── Back link ─────────────────────────────────────────────
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: $text-muted;
+  font-size: 0.82rem;
+  text-decoration: none;
+  margin-bottom: 1.75rem;
+  transition: color 0.2s;
+  align-self: flex-start;
+  max-width: 520px;
+  width: 100%;
+
+  &:hover {
+    color: $gold;
+  }
+}
+
+// ── Card ──────────────────────────────────────────────────
+.register-card {
+  width: 100%;
+  max-width: 520px;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 16px;
+  padding: 2.5rem;
+  position: relative;
+
+  // Thin gold top accent line
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 2rem;
+    right: 2rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $gold-dark, $blood, transparent);
+    border-radius: 1px;
+  }
+}
+
+// ── Card header ───────────────────────────────────────────
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: rgba(201, 162, 39, 0.08);
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  color: $gold;
+  flex-shrink: 0;
+}
+
+.card-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: $text;
+  margin: 0 0 0.2rem;
+  line-height: 1.2;
+}
+
+.card-subtitle {
+  font-size: 0.82rem;
+  color: $text-muted;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.card-divider {
+  height: 1px;
+  background: $border;
+  margin-bottom: 1.75rem;
+}
+
+// ── Form ──────────────────────────────────────────────────
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(240, 240, 240, 0.65);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.label-optional {
+  font-weight: 400;
+  color: $text-muted;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid $border;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus-within {
+    border-color: $gold;
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+    background: rgba(201, 162, 39, 0.03);
+  }
+
+  &.input-error {
+    border-color: rgba(139, 0, 0, 0.55);
+    &:focus-within {
+      border-color: #a00000;
+      box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+    }
+  }
+}
+
+.input-icon {
+  position: absolute;
+  left: 0.8rem;
+  color: rgba(201, 162, 39, 0.4);
+  pointer-events: none;
+  transition: color 0.2s;
+
+  .input-wrapper:focus-within & {
+    color: $gold;
+  }
+}
+
+.field-input {
+  width: 100% !important;
+  padding: 0.75rem 0.8rem 0.75rem 2.5rem !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: $text !important;
+  font-size: 0.9rem !important;
+  outline: none !important;
+  box-shadow: none !important;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.18) !important;
+  }
+}
+
+// Last-name input has no icon
+.field-row .field-group:last-child .field-input {
+  padding-left: 0.8rem !important;
+}
+
+.field-textarea {
+  width: 100%;
+  padding: 0.75rem 0.8rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid $border;
+  border-radius: 8px;
+  color: $text;
+  font-size: 0.9rem;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  min-height: 80px;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.18);
+  }
+
+  &:focus {
+    border-color: $gold;
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+    background: rgba(201, 162, 39, 0.03);
+  }
+}
+
+.field-error {
+  font-size: 0.75rem;
+  color: #cc4444;
+}
+
+// ── Submit ────────────────────────────────────────────────
+.submit-btn {
+  margin-top: 0.25rem;
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, $gold-dark 0%, $gold 100%);
+  color: $black;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, $gold 0%, $gold-light 100%);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  span { position: relative; z-index: 1; }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(184, 134, 11, 0.4);
+    &::before { opacity: 1; }
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(10, 10, 10, 0.3);
+  border-top-color: $black;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// ── Footer note ───────────────────────────────────────────
+.card-note {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: $text-muted;
+}
+
+.card-link {
+  color: $gold-dark;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $gold;
+  }
+}
+
+// ── Success state ─────────────────────────────────────────
+.success-state {
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.success-icon {
+  font-size: 2rem;
+  color: $gold;
+  margin-bottom: 1.25rem;
+  display: block;
+}
+
+.success-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: $text;
+  margin: 0 0 0.75rem;
+}
+
+.success-body {
+  font-size: 0.875rem;
+  color: $text-muted;
+  line-height: 1.75;
+  max-width: 360px;
+  margin: 0 auto 2rem;
+}
+
+.back-btn {
+  padding: 0.75rem 2rem;
+  background: transparent;
+  border: 1px solid $border;
+  border-radius: 8px;
+  color: $gold-dark;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: $gold;
+    color: $gold;
+    background: rgba(201, 162, 39, 0.05);
+  }
+}
+
+// ── Animations ────────────────────────────────────────────
+.animate-slide-up {
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out both;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

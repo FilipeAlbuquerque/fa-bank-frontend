@@ -1,0 +1,133 @@
+<div class="register-wrapper">
+
+  <!-- ── Back link ─────────────────────────────────────── -->
+  <a class="back-link" routerLink="/login">
+    <lucide-icon [img]="icons.ArrowLeft" size="15" />
+    <span>Back to Sign In</span>
+  </a>
+
+  <!-- ── Card ──────────────────────────────────────────── -->
+  <div class="register-card animate-slide-up">
+
+    <!-- Header -->
+    <div class="card-header">
+      <div class="card-logo">
+        <lucide-icon [img]="icons.Building2" size="28" />
+      </div>
+      <div>
+        <h1 class="card-title">Request Access</h1>
+        <p class="card-subtitle">Our team will review your request within 2 business days</p>
+      </div>
+    </div>
+
+    <div class="card-divider"></div>
+
+    <!-- Success state -->
+    @if (submitted()) {
+      <div class="success-state animate-fade-in">
+        <div class="success-icon">✦</div>
+        <h2 class="success-title">Request Received</h2>
+        <p class="success-body">
+          Thank you for your interest in FA Bank. A relationship manager
+          will contact you shortly to proceed with your onboarding.
+        </p>
+        <button class="back-btn" (click)="backToLogin()">Return to Sign In</button>
+      </div>
+    } @else {
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="form-fields">
+
+        <!-- Name row -->
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label" for="firstName">First Name</label>
+            <div class="input-wrapper" [class.input-error]="form.get('firstName')!.invalid && form.get('firstName')!.touched">
+              <lucide-icon [img]="icons.User" size="14" class="input-icon" />
+              <input pInputText id="firstName" type="text" formControlName="firstName"
+                     placeholder="John" class="field-input" autocomplete="given-name" />
+            </div>
+            @if (form.get('firstName')!.invalid && form.get('firstName')!.touched) {
+              <span class="field-error">Required</span>
+            }
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="lastName">Last Name</label>
+            <div class="input-wrapper" [class.input-error]="form.get('lastName')!.invalid && form.get('lastName')!.touched">
+              <input pInputText id="lastName" type="text" formControlName="lastName"
+                     placeholder="Smith" class="field-input" autocomplete="family-name" />
+            </div>
+            @if (form.get('lastName')!.invalid && form.get('lastName')!.touched) {
+              <span class="field-error">Required</span>
+            }
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="field-group">
+          <label class="field-label" for="email">Email Address</label>
+          <div class="input-wrapper" [class.input-error]="form.get('email')!.invalid && form.get('email')!.touched">
+            <lucide-icon [img]="icons.Mail" size="14" class="input-icon" />
+            <input pInputText id="email" type="email" formControlName="email"
+                   placeholder="john.smith@example.com" class="field-input" autocomplete="email" />
+          </div>
+          @if (form.get('email')!.invalid && form.get('email')!.touched) {
+            <span class="field-error">
+              @if (form.get('email')!.errors?.['required']) { Required field }
+              @else { Invalid email address }
+            </span>
+          }
+        </div>
+
+        <!-- Phone -->
+        <div class="field-group">
+          <label class="field-label" for="phone">Phone Number</label>
+          <div class="input-wrapper" [class.input-error]="form.get('phone')!.invalid && form.get('phone')!.touched">
+            <lucide-icon [img]="icons.Phone" size="14" class="input-icon" />
+            <input pInputText id="phone" type="tel" formControlName="phone"
+                   placeholder="+1 (555) 000-0000" class="field-input" autocomplete="tel" />
+          </div>
+          @if (form.get('phone')!.invalid && form.get('phone')!.touched) {
+            <span class="field-error">Required field</span>
+          }
+        </div>
+
+        <!-- Optional message -->
+        <div class="field-group">
+          <label class="field-label" for="message">
+            Message <span class="label-optional">(optional)</span>
+          </label>
+          <textarea
+            id="message"
+            formControlName="message"
+            placeholder="Tell us briefly about your banking needs..."
+            class="field-textarea"
+            rows="3"
+          ></textarea>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="submit-btn" [disabled]="loading()" [class.loading]="loading()">
+          @if (loading()) {
+            <span class="btn-spinner"></span>
+            <span>Submitting...</span>
+          } @else {
+            <span>Submit Request</span>
+          }
+        </button>
+
+      </form>
+
+    }
+
+    <!-- Footer note -->
+    @if (!submitted()) {
+      <p class="card-note">
+        Already have an account?
+        <a routerLink="/login" class="card-link">Sign in here</a>
+      </p>
+    }
+
+  </div>
+
+</div>
