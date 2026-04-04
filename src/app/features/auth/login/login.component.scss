@@ -391,6 +391,35 @@ $border:      rgba(201, 162, 39, 0.25);
   to { transform: rotate(360deg); }
 }
 
+// ── Register prompt ───────────────────────────────────────
+.register-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(201, 162, 39, 0.12);
+}
+
+.register-prompt-text {
+  font-size: 0.85rem;
+  color: rgba(240, 240, 240, 0.4);
+}
+
+.register-link {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: $gold-dark;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $gold;
+  }
+}
+
 // ── Footer ────────────────────────────────────────────────
 .form-footer {
   margin-top: 2rem;
