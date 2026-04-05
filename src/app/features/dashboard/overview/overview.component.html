@@ -8,144 +8,154 @@
     </div>
   </div>
 
-  <!-- ── Summary cards ──────────────────────────────────── -->
-  <div class="summary-grid">
+  @if (loading()) {
+    <div class="loading-state">Loading your data…</div>
+  } @else if (error()) {
+    <div class="error-state">{{ error() }}</div>
+  } @else {
 
-    <!-- Total balance -->
-    <div class="summary-card summary-card-primary">
-      <div class="summary-card-header">
-        <span class="summary-label">Total Balance</span>
-        <div class="summary-badge">All accounts</div>
-      </div>
-      <div class="summary-amount">
-        @if (visibility.valuesVisible()) {
-          <span>{{ totalBalance | number:'1.2-2' }}</span>
-          <span class="summary-currency">EUR</span>
-        } @else {
-          <span class="masked-value">••••••</span>
-        }
-      </div>
-    </div>
+    <!-- ── Summary cards ──────────────────────────────────── -->
+    <div class="summary-grid">
 
-    <!-- Monthly income -->
-    <div class="summary-card">
-      <div class="summary-card-header">
-        <span class="summary-label">Income this month</span>
-        <div class="summary-icon summary-icon-green">
-          <lucide-icon [img]="icons.TrendingUp" size="16" />
+      <!-- Total balance -->
+      <div class="summary-card summary-card-primary">
+        <div class="summary-card-header">
+          <span class="summary-label">Total Balance</span>
+          <div class="summary-badge">All accounts</div>
+        </div>
+        <div class="summary-amount">
+          @if (visibility.valuesVisible()) {
+            <span>{{ totalBalance() | number:'1.2-2' }}</span>
+            <span class="summary-currency">EUR</span>
+          } @else {
+            <span class="masked-value">••••••</span>
+          }
         </div>
       </div>
-      <div class="summary-amount summary-amount-sm">
-        @if (visibility.valuesVisible()) {
-          <span>{{ monthlyIncome | number:'1.2-2' }}</span>
-          <span class="summary-currency">EUR</span>
-        } @else {
-          <span class="masked-value">••••••</span>
-        }
-      </div>
-    </div>
 
-    <!-- Monthly expenses -->
-    <div class="summary-card">
-      <div class="summary-card-header">
-        <span class="summary-label">Expenses this month</span>
-        <div class="summary-icon summary-icon-red">
-          <lucide-icon [img]="icons.TrendingDown" size="16" />
-        </div>
-      </div>
-      <div class="summary-amount summary-amount-sm">
-        @if (visibility.valuesVisible()) {
-          <span>{{ monthlyExpenses | number:'1.2-2' }}</span>
-          <span class="summary-currency">EUR</span>
-        } @else {
-          <span class="masked-value">••••••</span>
-        }
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ── Accounts + Transactions ────────────────────────── -->
-  <div class="content-grid">
-
-    <!-- Accounts -->
-    <section class="card">
-      <div class="card-header-row">
-        <h2 class="card-section-title">My Accounts</h2>
-        <a class="card-link-action" routerLink="/dashboard/accounts">View all</a>
-      </div>
-
-      <div class="accounts-list">
-        @for (account of accounts; track account.id) {
-          <div class="account-item">
-            <div class="account-icon">
-              <lucide-icon [img]="accountIcon(account.type)" size="18" />
-            </div>
-            <div class="account-info">
-              <span class="account-label">{{ account.label }}</span>
-              <span class="account-iban">{{ formatIban(account.iban) }}</span>
-            </div>
-            <div class="account-balance">
-              @if (visibility.valuesVisible()) {
-                <span class="balance-amount">{{ account.balance | number:'1.2-2' }}</span>
-                <span class="balance-currency">{{ account.currency }}</span>
-              } @else {
-                <span class="masked-value">••••••</span>
-              }
-            </div>
+      <!-- Monthly income -->
+      <div class="summary-card">
+        <div class="summary-card-header">
+          <span class="summary-label">Income this month</span>
+          <div class="summary-icon summary-icon-green">
+            <lucide-icon [img]="icons.TrendingUp" size="16" />
           </div>
-        }
+        </div>
+        <div class="summary-amount summary-amount-sm">
+          @if (visibility.valuesVisible()) {
+            <span>{{ monthlyIncome() | number:'1.2-2' }}</span>
+            <span class="summary-currency">EUR</span>
+          } @else {
+            <span class="masked-value">••••••</span>
+          }
+        </div>
+      </div>
+
+      <!-- Monthly expenses -->
+      <div class="summary-card">
+        <div class="summary-card-header">
+          <span class="summary-label">Expenses this month</span>
+          <div class="summary-icon summary-icon-red">
+            <lucide-icon [img]="icons.TrendingDown" size="16" />
+          </div>
+        </div>
+        <div class="summary-amount summary-amount-sm">
+          @if (visibility.valuesVisible()) {
+            <span>{{ monthlyExpenses() | number:'1.2-2' }}</span>
+            <span class="summary-currency">EUR</span>
+          } @else {
+            <span class="masked-value">••••••</span>
+          }
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Accounts + Transactions ────────────────────────── -->
+    <div class="content-grid">
+
+      <!-- Accounts -->
+      <section class="card">
+        <div class="card-header-row">
+          <h2 class="card-section-title">My Accounts</h2>
+          <a class="card-link-action" routerLink="/dashboard/accounts">View all</a>
+        </div>
+
+        <div class="accounts-list">
+          @if (accounts().length === 0) {
+            <p class="empty-state">No accounts found.</p>
+          }
+          @for (account of accounts(); track account.id) {
+            <div class="account-item">
+              <div class="account-icon">
+                <lucide-icon [img]="accountIcon(account.type)" size="18" />
+              </div>
+              <div class="account-info">
+                <span class="account-label">{{ accountLabel(account) }}</span>
+                <span class="account-iban">{{ maskedNumber(account.accountNumber) }}</span>
+              </div>
+              <div class="account-balance">
+                @if (visibility.valuesVisible()) {
+                  <span class="balance-amount">{{ account.balance | number:'1.2-2' }}</span>
+                  <span class="balance-currency">EUR</span>
+                } @else {
+                  <span class="masked-value">••••••</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Recent transactions -->
+      <section class="card">
+        <div class="card-header-row">
+          <h2 class="card-section-title">Recent Transactions</h2>
+          <a class="card-link-action" routerLink="/dashboard/accounts">View all</a>
+        </div>
+
+        <div class="transactions-list">
+          @if (transactions().length === 0) {
+            <p class="empty-state">No transactions yet.</p>
+          }
+          @for (tx of transactions(); track tx.id) {
+            <div class="tx-item">
+              <div class="tx-icon" [class.tx-icon-credit]="txIsCredit(tx)" [class.tx-icon-debit]="!txIsCredit(tx)">
+                <lucide-icon [img]="txIcon(tx)" size="15" />
+              </div>
+              <div class="tx-info">
+                <span class="tx-description">{{ tx.description || tx.type }}</span>
+                <span class="tx-date">{{ tx.createdAt | date:'dd MMM yyyy' }}</span>
+              </div>
+              <div class="tx-amount" [class.tx-credit]="txIsCredit(tx)" [class.tx-debit]="!txIsCredit(tx)">
+                @if (visibility.valuesVisible()) {
+                  {{ txIsCredit(tx) ? '+' : '-' }}{{ tx.amount | number:'1.2-2' }} EUR
+                } @else {
+                  <span class="masked-value">••••••</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ── Quick actions ──────────────────────────────────── -->
+    <section class="quick-actions">
+      <h2 class="card-section-title" style="margin-bottom: 1rem;">Quick Actions</h2>
+      <div class="actions-row">
+        <a class="action-btn" routerLink="/dashboard/transfer">
+          <lucide-icon [img]="icons.ArrowLeftRight" size="20" />
+          <span>Transfer</span>
+        </a>
+        <a class="action-btn" routerLink="/dashboard/accounts">
+          <lucide-icon [img]="icons.CreditCard" size="20" />
+          <span>Accounts</span>
+        </a>
       </div>
     </section>
 
-    <!-- Recent transactions -->
-    <section class="card">
-      <div class="card-header-row">
-        <h2 class="card-section-title">Recent Transactions</h2>
-        <a class="card-link-action" routerLink="/dashboard/accounts">View all</a>
-      </div>
-
-      <div class="transactions-list">
-        @for (tx of recentTransactions; track tx.id) {
-          <div class="tx-item">
-            <div class="tx-icon" [class.tx-icon-credit]="tx.type === 'credit'" [class.tx-icon-debit]="tx.type === 'debit'">
-              @if (tx.type === 'credit') {
-                <lucide-icon [img]="icons.ArrowDownLeft" size="15" />
-              } @else {
-                <lucide-icon [img]="icons.ArrowUpRight" size="15" />
-              }
-            </div>
-            <div class="tx-info">
-              <span class="tx-description">{{ tx.description }}</span>
-              <span class="tx-date">{{ tx.date }}</span>
-            </div>
-            <div class="tx-amount" [class.tx-credit]="tx.type === 'credit'" [class.tx-debit]="tx.type === 'debit'">
-              @if (visibility.valuesVisible()) {
-                {{ tx.type === 'credit' ? '+' : '' }}{{ tx.amount | number:'1.2-2' }} EUR
-              } @else {
-                <span class="masked-value">••••••</span>
-              }
-            </div>
-          </div>
-        }
-      </div>
-    </section>
-
-  </div>
-
-  <!-- ── Quick actions ──────────────────────────────────── -->
-  <section class="quick-actions">
-    <h2 class="card-section-title" style="margin-bottom: 1rem;">Quick Actions</h2>
-    <div class="actions-row">
-      <a class="action-btn" routerLink="/dashboard/transfer">
-        <lucide-icon [img]="icons.ArrowLeftRight" size="20" />
-        <span>Transfer</span>
-      </a>
-      <a class="action-btn" routerLink="/dashboard/accounts">
-        <lucide-icon [img]="icons.CreditCard" size="20" />
-        <span>Accounts</span>
-      </a>
-    </div>
-  </section>
+  }
 
 </div>
