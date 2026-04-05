@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { TokenService } from './token.service';
 
 export interface LoginRequest {
   username: string;
@@ -10,16 +11,17 @@ export interface LoginRequest {
 }
 
 export interface AuthResponse {
-  token: string;
+  token:    string;
   username: string;
-  roles: string[];
+  roles:    string[];
 }
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly http = inject(HttpClient);
-  private readonly router = inject(Router);
-  private readonly TOKEN_KEY = 'fa_bank_token';
+  private readonly http         = inject(HttpClient);
+  private readonly router       = inject(Router);
+  private readonly tokenService = inject(TokenService);
+  private readonly TOKEN_KEY    = 'fa_bank_token';
 
   private readonly _isLoggedIn$ = new BehaviorSubject<boolean>(this.hasToken());
   readonly isLoggedIn$ = this._isLoggedIn$.asObservable();
@@ -30,6 +32,7 @@ export class AuthService {
       .pipe(
         tap((response) => {
           localStorage.setItem(this.TOKEN_KEY, response.token);
+          this.tokenService.setToken(response.token);
           this._isLoggedIn$.next(true);
         })
       );
@@ -37,6 +40,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
+    this.tokenService.clearToken();
     this._isLoggedIn$.next(false);
     this.router.navigate(['/login']);
   }

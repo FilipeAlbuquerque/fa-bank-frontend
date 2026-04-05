@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -32,6 +33,12 @@ export const routes: Routes = [
         path: 'overview',
         loadComponent: () =>
           import('./features/dashboard/overview/overview.component').then((m) => m.OverviewComponent),
+      },
+      {
+        path: 'admin',
+        canActivate: [roleGuard(['ROLE_ADMIN'])],
+        loadComponent: () =>
+          import('./features/dashboard/admin/admin.component').then((m) => m.AdminComponent),
       },
       // Future child routes:
       // { path: 'accounts', ... }

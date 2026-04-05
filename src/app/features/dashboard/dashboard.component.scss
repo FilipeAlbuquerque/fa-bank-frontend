@@ -160,6 +160,22 @@ $sidebar-w:   240px;
   }
 }
 
+.nav-admin {
+  color: rgba(224, 85, 85, 0.7);
+
+  &:hover {
+    background: rgba(139, 0, 0, 0.1);
+    color: #e05555;
+  }
+
+  &.nav-item-active {
+    background: rgba(139, 0, 0, 0.12);
+    color: #e05555;
+
+    .nav-icon { color: #e05555; }
+  }
+}
+
 // ── Main area ─────────────────────────────────────────────
 .main-area {
   flex: 1;
@@ -213,6 +229,15 @@ $sidebar-w:   240px;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.topbar-username {
+  font-size: 0.82rem;
+  color: $text-muted;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .icon-btn {
