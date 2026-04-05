@@ -1,21 +1,30 @@
 import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeng/themes/aura';
 import { RegisterComponent } from './register.component';
+import { DEFAULT_COUNTRY } from '../../../shared/data/countries.data';
 
 const VALID_FORM = {
-  firstName: 'John',
-  lastName:  'Smith',
-  email:     'john@example.com',
-  phone:     '+1 555 000 0000',
-  message:   '',
+  firstName:   'John',
+  lastName:    'Smith',
+  email:       'john@example.com',
+  countryCode: DEFAULT_COUNTRY,
+  phoneNumber: '555 000 0000',
+  message:     '',
 };
 
 describe('RegisterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RegisterComponent, ReactiveFormsModule],
-      providers: [provideRouter([{ path: 'login', component: {} as never }])],
+      providers: [
+        provideRouter([{ path: 'login', component: {} as never }]),
+        provideAnimationsAsync(),
+        providePrimeNG({ theme: { preset: Aura } }),
+      ],
     }).compileComponents();
   });
 
@@ -37,6 +46,7 @@ describe('RegisterComponent', () => {
 
   it('should be invalid when form is empty', () => {
     const { componentInstance: comp } = createComponent();
+    comp.form.patchValue({ firstName: '', lastName: '', email: '', phoneNumber: '', message: '' });
     expect(comp.form.invalid).toBe(true);
   });
 
@@ -96,20 +106,65 @@ describe('RegisterComponent', () => {
 
   it('should error for a phone number that is too short', () => {
     const { componentInstance: comp } = createComponent();
-    comp.form.patchValue({ phone: '123' });
-    expect(comp.form.get('phone')!.errors?.['phoneFormat']).toBeTruthy();
+    comp.form.patchValue({ phoneNumber: '123' });
+    expect(comp.form.get('phoneNumber')!.errors?.['phoneFormat']).toBeTruthy();
   });
 
-  it('should error for a phone number with invalid characters', () => {
+  it('should error for a phone number with letters', () => {
     const { componentInstance: comp } = createComponent();
-    comp.form.patchValue({ phone: 'abc-def-ghij' });
-    expect(comp.form.get('phone')!.errors?.['phoneFormat']).toBeTruthy();
+    comp.form.patchValue({ phoneNumber: 'abc123' });
+    expect(comp.form.get('phoneNumber')!.errors?.['phoneFormat']).toBeTruthy();
   });
 
-  it('should accept an international phone number', () => {
+  it('should accept a valid local phone number', () => {
     const { componentInstance: comp } = createComponent();
     comp.form.setValue(VALID_FORM);
-    expect(comp.form.get('phone')!.valid).toBe(true);
+    expect(comp.form.get('phoneNumber')!.valid).toBe(true);
+  });
+
+  it('countryCode should default to Portugal', () => {
+    const { componentInstance: comp } = createComponent();
+    expect(comp.form.get('countryCode')!.value?.code).toBe('PT');
+  });
+
+  it('onPhoneKeyDown should allow digit keys', () => {
+    const { componentInstance: comp } = createComponent();
+    const event = new KeyboardEvent('keydown', { key: '5' });
+    const spy = vi.spyOn(event, 'preventDefault');
+    comp.onPhoneKeyDown(event);
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('onPhoneKeyDown should block letter keys', () => {
+    const { componentInstance: comp } = createComponent();
+    const event = new KeyboardEvent('keydown', { key: 'a' });
+    const spy = vi.spyOn(event, 'preventDefault');
+    comp.onPhoneKeyDown(event);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('onPhoneKeyDown should allow Backspace and Delete', () => {
+    const { componentInstance: comp } = createComponent();
+    const backspace = new KeyboardEvent('keydown', { key: 'Backspace' });
+    const del = new KeyboardEvent('keydown', { key: 'Delete' });
+    const spy1 = vi.spyOn(backspace, 'preventDefault');
+    const spy2 = vi.spyOn(del, 'preventDefault');
+    comp.onPhoneKeyDown(backspace);
+    comp.onPhoneKeyDown(del);
+    expect(spy1).not.toHaveBeenCalled();
+    expect(spy2).not.toHaveBeenCalled();
+  });
+
+  it('onPhoneKeyDown should allow Ctrl+C and Cmd+V shortcuts', () => {
+    const { componentInstance: comp } = createComponent();
+    const ctrlC = new KeyboardEvent('keydown', { key: 'c', ctrlKey: true });
+    const metaV = new KeyboardEvent('keydown', { key: 'v', metaKey: true });
+    const spy1 = vi.spyOn(ctrlC, 'preventDefault');
+    const spy2 = vi.spyOn(metaV, 'preventDefault');
+    comp.onPhoneKeyDown(ctrlC);
+    comp.onPhoneKeyDown(metaV);
+    expect(spy1).not.toHaveBeenCalled();
+    expect(spy2).not.toHaveBeenCalled();
   });
 
   // ── Message ──────────────────────────────────────────────
@@ -136,6 +191,7 @@ describe('RegisterComponent', () => {
 
   it('should mark all fields as touched when submitting invalid form', () => {
     const { componentInstance: comp } = createComponent();
+    comp.form.patchValue({ firstName: '', lastName: '', email: '', phoneNumber: '', message: '' });
     comp.onSubmit();
     expect(comp.form.get('firstName')!.touched).toBe(true);
     expect(comp.form.get('email')!.touched).toBe(true);
@@ -143,6 +199,7 @@ describe('RegisterComponent', () => {
 
   it('should not change loading or submitted when form is invalid', () => {
     const { componentInstance: comp } = createComponent();
+    comp.form.patchValue({ firstName: '', lastName: '', email: '', phoneNumber: '', message: '' });
     comp.onSubmit();
     expect(comp.loading()).toBe(false);
     expect(comp.submitted()).toBe(false);

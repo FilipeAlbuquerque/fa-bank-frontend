@@ -264,6 +264,121 @@ $border:     rgba(201, 162, 39, 0.22);
   color: #cc4444;
 }
 
+// ── Phone split field ─────────────────────────────────────
+.phone-field-wrapper {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid $border;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+
+  &:focus-within {
+    border-color: $gold;
+    box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.1);
+    background: rgba(201, 162, 39, 0.03);
+  }
+
+  &.input-error {
+    border-color: rgba(139, 0, 0, 0.55);
+    &:focus-within {
+      border-color: #a00000;
+      box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+    }
+  }
+
+  // Override p-select to blend into the wrapper
+  ::ng-deep .phone-country-select {
+    border: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    min-width: 100px;
+
+    .p-select-label {
+      padding: 0.75rem 0.5rem 0.75rem 0.75rem;
+      background: transparent;
+      color: $text;
+      font-size: 0.9rem;
+    }
+
+    .p-select-dropdown {
+      background: transparent;
+      color: rgba(201, 162, 39, 0.5);
+      padding-right: 0.5rem;
+    }
+
+    &:hover, &.p-focus {
+      border: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+    }
+  }
+}
+
+.phone-divider {
+  width: 1px;
+  background: $border;
+  margin: 0.5rem 0;
+  flex-shrink: 0;
+}
+
+.phone-number-input {
+  flex: 1;
+  padding: 0.75rem 0.8rem !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  color: $text !important;
+  font-size: 0.9rem !important;
+  outline: none !important;
+  box-shadow: none !important;
+  min-width: 0;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.18) !important;
+  }
+}
+
+// Country dropdown item templates
+.country-selected {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.country-flag {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.country-dial {
+  font-size: 0.85rem;
+  color: $text;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.country-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.country-name {
+  flex: 1;
+  font-size: 0.875rem;
+  color: $text;
+}
+
+.country-dial-muted {
+  font-size: 0.8rem;
+  color: $text-muted;
+  white-space: nowrap;
+}
+
 // ── Submit ────────────────────────────────────────────────
 .submit-btn {
   margin-top: 0.25rem;

@@ -92,17 +92,56 @@
 
         <!-- Phone -->
         <div class="field-group">
-          <label class="field-label" for="phone">Phone Number</label>
-          <div class="input-wrapper" [class.input-error]="form.get('phone')!.invalid && form.get('phone')!.touched">
-            <lucide-icon [img]="icons.Phone" size="14" class="input-icon" />
-            <input pInputText id="phone" type="tel" formControlName="phone"
-                   placeholder="+1 (555) 000-0000" maxlength="20"
-                   class="field-input" autocomplete="off" />
+          <label class="field-label">Phone Number</label>
+          <div class="phone-field-wrapper"
+               [class.input-error]="form.get('phoneNumber')!.invalid && form.get('phoneNumber')!.touched">
+
+            <!-- Country code dropdown -->
+            <p-select
+              formControlName="countryCode"
+              [options]="countries"
+              optionLabel="name"
+              dataKey="code"
+              [filter]="true"
+              filterBy="name,dialCode"
+              styleClass="phone-country-select"
+              appendTo="body"
+              aria-label="Country code"
+            >
+              <ng-template pTemplate="selectedItem" let-c>
+                <span class="country-selected">
+                  <span class="country-flag">{{ c.flag }}</span>
+                  <span class="country-dial">{{ c.dialCode }}</span>
+                </span>
+              </ng-template>
+              <ng-template pTemplate="item" let-c>
+                <span class="country-option">
+                  <span class="country-flag">{{ c.flag }}</span>
+                  <span class="country-name">{{ c.name }}</span>
+                  <span class="country-dial-muted">{{ c.dialCode }}</span>
+                </span>
+              </ng-template>
+            </p-select>
+
+            <span class="phone-divider"></span>
+
+            <!-- Local number input -->
+            <input
+              pInputText
+              id="phoneNumber"
+              type="tel"
+              formControlName="phoneNumber"
+              placeholder="555 000 0000"
+              maxlength="15"
+              class="phone-number-input"
+              autocomplete="off"
+              (keydown)="onPhoneKeyDown($event)"
+            />
           </div>
-          @if (form.get('phone')!.invalid && form.get('phone')!.touched) {
+          @if (form.get('phoneNumber')!.invalid && form.get('phoneNumber')!.touched) {
             <span class="field-error">
-              @if (form.get('phone')!.errors?.['required']) { Required field }
-              @else if (form.get('phone')!.errors?.['phoneFormat']) { Enter a valid phone number (e.g. +1 555 000 0000) }
+              @if (form.get('phoneNumber')!.errors?.['required']) { Required field }
+              @else if (form.get('phoneNumber')!.errors?.['phoneFormat']) { Enter digits only (4–15 numbers) }
             </span>
           }
         </div>

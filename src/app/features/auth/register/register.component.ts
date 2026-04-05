@@ -4,14 +4,15 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { PasswordModule } from 'primeng/password';
-import { LucideAngularModule, Building2, ArrowLeft, User, Mail, Phone } from 'lucide-angular';
+import { SelectModule } from 'primeng/select';
+import { LucideAngularModule, Building2, ArrowLeft, User, Mail } from 'lucide-angular';
 import {
   NAME_MIN, NAME_MAX, MESSAGE_MAX,
   namePatternValidator,
   emailFormatValidator,
-  phoneValidator,
+  localPhoneValidator,
 } from '../../../shared/validators/auth.validators';
+import { Country, COUNTRIES, DEFAULT_COUNTRY } from '../../../shared/data/countries.data';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +23,7 @@ import {
     RouterLink,
     InputTextModule,
     ButtonModule,
-    PasswordModule,
+    SelectModule,
     LucideAngularModule,
   ],
   templateUrl: './register.component.html',
@@ -32,12 +33,13 @@ export class RegisterComponent {
   private readonly fb     = inject(FormBuilder);
   private readonly router = inject(Router);
 
-  readonly icons = { Building2, ArrowLeft, User, Mail, Phone };
+  readonly icons = { Building2, ArrowLeft, User, Mail };
 
   readonly submitted = signal(false);
   readonly loading   = signal(false);
 
   readonly MESSAGE_MAX = MESSAGE_MAX;
+  readonly countries: Country[] = COUNTRIES;
 
   readonly form = this.fb.group({
     firstName: ['', [
@@ -56,9 +58,10 @@ export class RegisterComponent {
       Validators.required,
       emailFormatValidator,
     ]],
-    phone: ['', [
+    countryCode: [DEFAULT_COUNTRY as Country, [Validators.required]],
+    phoneNumber: ['', [
       Validators.required,
-      phoneValidator,
+      localPhoneValidator,
     ]],
     message: ['', [
       Validators.maxLength(MESSAGE_MAX),
@@ -67,6 +70,19 @@ export class RegisterComponent {
 
   get messageLength(): number {
     return this.form.get('message')!.value?.length ?? 0;
+  }
+
+  /** Blocks letter and symbol key input on the local phone number field. */
+  onPhoneKeyDown(event: KeyboardEvent): void {
+    const allowed = [
+      'Backspace', 'Delete', 'Tab', 'Escape', 'Enter',
+      'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+      'Home', 'End', ' ', '-',
+    ];
+    if (allowed.includes(event.key)) return;
+    if (/^\d$/.test(event.key)) return;
+    if (event.ctrlKey || event.metaKey) return;
+    event.preventDefault();
   }
 
   onSubmit(): void {

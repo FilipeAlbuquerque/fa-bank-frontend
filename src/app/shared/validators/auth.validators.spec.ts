@@ -8,6 +8,7 @@ import {
   namePatternValidator,
   emailFormatValidator,
   phoneValidator,
+  localPhoneValidator,
 } from './auth.validators';
 
 const ctrl = (value: string) => new FormControl(value);
@@ -151,5 +152,31 @@ describe('phoneValidator', () => {
 
   it('should return null for empty value', () => {
     expect(phoneValidator(ctrl(''))).toBeNull();
+  });
+});
+
+describe('localPhoneValidator', () => {
+  it('should return null for valid local numbers', () => {
+    expect(localPhoneValidator(ctrl('555 000 0000'))).toBeNull();
+    expect(localPhoneValidator(ctrl('912 345 678'))).toBeNull();
+    expect(localPhoneValidator(ctrl('1234'))).toBeNull();
+    expect(localPhoneValidator(ctrl('555-000-0000'))).toBeNull();
+  });
+
+  it('should return error for numbers with letters', () => {
+    expect(localPhoneValidator(ctrl('abc123'))).toEqual({ phoneFormat: true });
+    expect(localPhoneValidator(ctrl('555abc'))).toEqual({ phoneFormat: true });
+  });
+
+  it('should return error for too short numbers', () => {
+    expect(localPhoneValidator(ctrl('123'))).toEqual({ phoneFormat: true });
+  });
+
+  it('should return error for too long numbers', () => {
+    expect(localPhoneValidator(ctrl('1234567890123456'))).toEqual({ phoneFormat: true });
+  });
+
+  it('should return null for empty value', () => {
+    expect(localPhoneValidator(ctrl(''))).toBeNull();
   });
 });

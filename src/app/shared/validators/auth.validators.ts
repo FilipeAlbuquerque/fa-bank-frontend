@@ -102,3 +102,18 @@ export const phoneValidator: ValidatorFn = (
   const lengthOk = digitsOnly.length >= 7 && digitsOnly.length <= 15;
   return formatOk && lengthOk ? null : { phoneFormat: true };
 };
+
+/**
+ * Validates the local part of a phone number (after the country dial code).
+ * Accepts digits, spaces and hyphens. Requires between 4 and 15 digits.
+ */
+export const localPhoneValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  if (!control.value) return null;
+  const raw: string = String(control.value);
+  const digitsOnly = raw.replace(/[\s\-]/g, '');
+  if (!/^\d+$/.test(digitsOnly)) return { phoneFormat: true };
+  if (digitsOnly.length < 4 || digitsOnly.length > 15) return { phoneFormat: true };
+  return null;
+};
