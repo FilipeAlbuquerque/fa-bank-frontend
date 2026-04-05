@@ -70,6 +70,7 @@
               formControlName="username"
               placeholder="your username"
               autocomplete="off"
+              maxlength="30"
               class="field-input"
             />
           </div>
@@ -77,6 +78,8 @@
             <span class="field-error">
               @if (username.errors?.['required']) { Required field }
               @else if (username.errors?.['minlength']) { Minimum 3 characters }
+              @else if (username.errors?.['maxlength']) { Maximum 30 characters }
+              @else if (username.errors?.['usernamePattern']) { Only letters, digits, _ and - allowed }
             </span>
           }
         </div>
@@ -95,12 +98,18 @@
               styleClass="w-full"
               inputStyleClass="field-input pl-10"
               autocomplete="new-password"
+              [maxlength]="64"
             />
           </div>
           @if (password.invalid && password.touched) {
             <span class="field-error">
               @if (password.errors?.['required']) { Required field }
-              @else if (password.errors?.['minlength']) { Minimum 6 characters }
+              @else if (password.errors?.['minlength']) { Minimum 8 characters }
+              @else if (password.errors?.['maxlength']) { Maximum 64 characters }
+              @else if (password.errors?.['hasUppercase']) { Must contain at least one uppercase letter }
+              @else if (password.errors?.['hasLowercase']) { Must contain at least one lowercase letter }
+              @else if (password.errors?.['hasNumber']) { Must contain at least one number }
+              @else if (password.errors?.['hasSpecialChar']) { Must contain at least one special character }
             </span>
           }
         </div>
