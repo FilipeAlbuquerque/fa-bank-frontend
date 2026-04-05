@@ -1,6 +1,6 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { LucideAngularModule, LucideIconData, CreditCard, PiggyBank, TrendingUp, ChevronRight, RefreshCw } from 'lucide-angular';
 import { AccountService } from '../../../core/services/account.service';
 import { VisibilityService } from '../../../core/services/visibility.service';
@@ -9,7 +9,7 @@ import { Account, AccountType } from '../../../core/models/account.model';
 @Component({
   selector: 'app-accounts',
   standalone: true,
-  imports: [CommonModule, DecimalPipe, LucideAngularModule, RouterLink],
+  imports: [CommonModule, DecimalPipe, LucideAngularModule],
   templateUrl: './accounts.component.html',
   styleUrl: './accounts.component.scss',
 })

@@ -1,5 +1,5 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
-import { CommonModule, DecimalPipe, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -15,7 +15,7 @@ import { Transaction, TransactionType } from '../../../../core/models/account.mo
 @Component({
   selector: 'app-account-detail',
   standalone: true,
-  imports: [CommonModule, DecimalPipe, DatePipe, ReactiveFormsModule, LucideAngularModule, RouterLink],
+  imports: [CommonModule, DatePipe, ReactiveFormsModule, LucideAngularModule, RouterLink],
   templateUrl: './account-detail.component.html',
   styleUrl: './account-detail.component.scss',
 })
