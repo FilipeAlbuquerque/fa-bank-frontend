@@ -22,6 +22,22 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () =>
       import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+    children: [
+      {
+        path: '',
+        redirectTo: 'overview',
+        pathMatch: 'full',
+      },
+      {
+        path: 'overview',
+        loadComponent: () =>
+          import('./features/dashboard/overview/overview.component').then((m) => m.OverviewComponent),
+      },
+      // Future child routes:
+      // { path: 'accounts', ... }
+      // { path: 'transfer', ... }
+      // { path: 'profile',  ... }
+    ],
   },
   {
     path: '**',
