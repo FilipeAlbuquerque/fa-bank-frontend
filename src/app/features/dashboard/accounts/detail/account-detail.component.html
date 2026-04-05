@@ -1,0 +1,118 @@
+<div class="detail-page">
+
+  <!-- ── Header ─────────────────────────────────────────── -->
+  <div class="page-header">
+    <a class="back-link" routerLink="/dashboard/accounts">
+      <lucide-icon [img]="icons.ArrowLeft" size="16" />
+      <span>Back to Accounts</span>
+    </a>
+    <div class="header-info">
+      <h1 class="page-title">Transactions</h1>
+      <p class="page-subtitle account-num">{{ accountNumber() }}</p>
+    </div>
+    <button class="filter-toggle" (click)="filtersOpen.update(v => !v)"
+            [class.filter-active]="filtersOpen()" aria-label="Toggle filters">
+      <lucide-icon [img]="icons.Filter" size="16" />
+      <span>Filters</span>
+    </button>
+  </div>
+
+  <!-- ── Filters panel ──────────────────────────────────── -->
+  @if (filtersOpen()) {
+    <div class="filters-panel" [formGroup]="filterForm">
+      <div class="filter-row">
+
+        <div class="filter-group">
+          <label class="filter-label">Type</label>
+          <select class="filter-select" formControlName="type">
+            @for (opt of txTypes; track opt.value) {
+              <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">From</label>
+          <input class="filter-input" type="date" formControlName="startDate" />
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">To</label>
+          <input class="filter-input" type="date" formControlName="endDate" />
+        </div>
+
+        <button class="filter-reset" (click)="resetFilters()">Clear</button>
+
+      </div>
+    </div>
+  }
+
+  <!-- ── Loading ────────────────────────────────────────── -->
+  @if (loading()) {
+    <div class="state-container">
+      <div class="spinner"></div>
+      <p class="state-text">Loading transactions...</p>
+    </div>
+  }
+
+  <!-- ── Error ──────────────────────────────────────────── -->
+  @if (error()) {
+    <div class="error-banner">
+      <p>{{ error() }}</p>
+      <button class="retry-btn" (click)="loadPage(currentPage())">Try again</button>
+    </div>
+  }
+
+  <!-- ── Empty ──────────────────────────────────────────── -->
+  @if (!loading() && !error() && filteredTransactions().length === 0) {
+    <div class="state-container">
+      <p class="state-title">No transactions found</p>
+      <p class="state-text">Try adjusting your filters or check back later.</p>
+    </div>
+  }
+
+  <!-- ── Transaction list ───────────────────────────────── -->
+  @if (!loading() && filteredTransactions().length > 0) {
+    <div class="tx-list">
+      @for (tx of filteredTransactions(); track tx.id) {
+        <div class="tx-row">
+          <div class="tx-icon" [class.tx-credit]="txIsCredit(tx)" [class.tx-debit]="!txIsCredit(tx)">
+            <lucide-icon [img]="txIcon(tx.type)" size="15" />
+          </div>
+
+          <div class="tx-info">
+            <span class="tx-desc">{{ tx.description || tx.type }}</span>
+            <span class="tx-meta">
+              {{ tx.createdAt | date:'dd MMM yyyy · HH:mm' }}
+              @if (tx.type === 'TRANSFER') {
+                <span class="tx-counterpart">
+                  {{ txIsCredit(tx) ? '← ' + tx.sourceAccountNumber : '→ ' + tx.destinationAccountNumber }}
+                </span>
+              }
+            </span>
+          </div>
+
+          <div class="tx-amount-col" [class.amount-credit]="txIsCredit(tx)" [class.amount-debit]="!txIsCredit(tx)">
+            <span class="tx-amount">{{ maskedAmount(tx.amount, txIsCredit(tx)) }}</span>
+            <span class="tx-currency">EUR</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- ── Pagination ─────────────────────────────────── -->
+    @if (totalPages() > 1) {
+      <div class="pagination">
+        <button class="page-btn" (click)="prevPage()" [disabled]="currentPage() === 0" aria-label="Previous page">
+          <lucide-icon [img]="icons.ChevronLeft" size="16" />
+        </button>
+        <span class="page-info">{{ currentPage() + 1 }} / {{ totalPages() }}</span>
+        <span class="page-total">({{ totalElements() }} transactions)</span>
+        <button class="page-btn" (click)="nextPage()" [disabled]="currentPage() === totalPages() - 1" aria-label="Next page">
+          <lucide-icon [img]="icons.ChevronRight" size="16" />
+        </button>
+      </div>
+    }
+  }
+
+</div>

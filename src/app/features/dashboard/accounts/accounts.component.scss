@@ -1,0 +1,336 @@
+// ── Tokens ────────────────────────────────────────────────
+$gold:       #C9A227;
+$gold-dark:  #B8860B;
+$gold-light: #D4AF37;
+$black:      #0a0a0a;
+$surface:    #141414;
+$surface-2:  #1a1a1a;
+$surface-3:  #202020;
+$text:       #f0f0f0;
+$text-muted: rgba(240, 240, 240, 0.45);
+$border:     rgba(201, 162, 39, 0.18);
+
+// ── Page ──────────────────────────────────────────────────
+.accounts-page {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// ── Header ────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.page-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: $text;
+  margin: 0 0 0.2rem;
+}
+
+.page-subtitle {
+  font-size: 0.875rem;
+  color: $text-muted;
+  margin: 0;
+}
+
+.refresh-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: none;
+  border: 1px solid $border;
+  color: $text-muted;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+
+  &:hover:not(:disabled) {
+    color: $gold;
+    border-color: rgba(201, 162, 39, 0.4);
+  }
+
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+.spinning {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// ── Total banner ──────────────────────────────────────────
+.total-banner {
+  background: linear-gradient(135deg, #161408 0%, $surface-2 100%);
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 1.5rem; right: 1.5rem; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,162,39,0.4), transparent);
+  }
+}
+
+.total-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.total-amount {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: $gold-light;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.total-currency {
+  font-size: 0.875rem;
+  color: $text-muted;
+  font-weight: 400;
+}
+
+.masked {
+  color: $text-muted;
+  letter-spacing: 0.1em;
+}
+
+// ── State containers ──────────────────────────────────────
+.state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid $border;
+  border-top-color: $gold;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: rgba(201, 162, 39, 0.06);
+  border: 1px solid $border;
+  color: $text-muted;
+}
+
+.state-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: $text;
+  margin: 0;
+}
+
+.state-text {
+  font-size: 0.875rem;
+  color: $text-muted;
+  margin: 0;
+  max-width: 360px;
+  line-height: 1.6;
+}
+
+// ── Error banner ──────────────────────────────────────────
+.error-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: rgba(139, 0, 0, 0.1);
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  border-radius: 10px;
+  color: #f87171;
+  font-size: 0.875rem;
+
+  p { margin: 0; }
+}
+
+.retry-btn {
+  background: none;
+  border: 1px solid rgba(139, 0, 0, 0.4);
+  border-radius: 6px;
+  color: #f87171;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+
+  &:hover { background: rgba(139, 0, 0, 0.15); }
+}
+
+// ── Accounts list ─────────────────────────────────────────
+.accounts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.account-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  background: $surface-2;
+  border: 1px solid $border;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 1.5rem; right: 1.5rem; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,162,39,0.2), transparent);
+  }
+
+  &:hover, &:focus-visible {
+    border-color: rgba(201, 162, 39, 0.4);
+    background: $surface-3;
+    transform: translateY(-1px);
+  }
+}
+
+.account-card-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.account-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  border: 1px solid rgba(201, 162, 39, 0.25);
+
+  &.account-icon-checking  { background: rgba(201, 162, 39, 0.08); color: $gold; }
+  &.account-icon-savings   { background: rgba(74, 222, 128, 0.08); color: #4ade80; border-color: rgba(74, 222, 128, 0.2); }
+  &.account-icon-business  { background: rgba(139, 92, 246, 0.08); color: #a78bfa; border-color: rgba(139, 92, 246, 0.2); }
+  &.account-icon-investment { background: rgba(56, 189, 248, 0.08); color: #38bdf8; border-color: rgba(56, 189, 248, 0.2); }
+}
+
+.account-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.account-type {
+  font-size: 0.925rem;
+  font-weight: 600;
+  color: $text;
+}
+
+.account-number {
+  font-size: 0.78rem;
+  color: $text-muted;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.05em;
+}
+
+.account-status {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  width: fit-content;
+
+  &.status-active   { background: rgba(74, 222, 128, 0.1);  color: #4ade80; }
+  &.status-inactive { background: rgba(156, 163, 175, 0.1); color: #9ca3af; }
+  &.status-blocked  { background: rgba(248, 113, 113, 0.1); color: #f87171; }
+  &.status-closed   { background: rgba(107, 114, 128, 0.1); color: #6b7280; }
+}
+
+.account-card-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-shrink: 0;
+}
+
+.account-balance {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  text-align: right;
+}
+
+.balance-amount {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $text;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.balance-currency {
+  font-size: 0.75rem;
+  color: $text-muted;
+}
+
+.available-limit {
+  font-size: 0.72rem;
+  color: $text-muted;
+  display: none;
+
+  @media (min-width: 540px) { display: block; }
+}
+
+.chevron {
+  color: $text-muted;
+  transition: color 0.2s, transform 0.2s;
+
+  .account-card:hover & {
+    color: $gold;
+    transform: translateX(2px);
+  }
+}
