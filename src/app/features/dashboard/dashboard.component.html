@@ -25,6 +25,19 @@
           <span>{{ item.label }}</span>
         </a>
       }
+
+      @if (tokenService.isAdmin()) {
+        <a
+          class="nav-item nav-admin"
+          routerLink="/dashboard/admin"
+          routerLinkActive="nav-item-active"
+          [routerLinkActiveOptions]="{ exact: false }"
+          (click)="closeMobileMenu()"
+        >
+          <lucide-icon [img]="icons.ShieldCheck" size="18" class="nav-icon" />
+          <span>Admin</span>
+        </a>
+      }
     </nav>
 
     <!-- Sidebar footer -->
@@ -65,6 +78,19 @@
             <span>{{ item.label }}</span>
           </a>
         }
+
+        @if (tokenService.isAdmin()) {
+          <a
+            class="nav-item nav-admin"
+            routerLink="/dashboard/admin"
+            routerLinkActive="nav-item-active"
+            [routerLinkActiveOptions]="{ exact: false }"
+            (click)="closeMobileMenu()"
+          >
+            <lucide-icon [img]="icons.ShieldCheck" size="18" class="nav-icon" />
+            <span>Admin</span>
+          </a>
+        }
       </nav>
 
       <div class="sidebar-footer">
@@ -91,6 +117,11 @@
 
       <!-- Actions -->
       <div class="topbar-actions">
+        <!-- Username -->
+        @if (tokenService.username()) {
+          <span class="topbar-username">{{ tokenService.username() }}</span>
+        }
+
         <!-- Visibility toggle -->
         <button
           class="icon-btn"

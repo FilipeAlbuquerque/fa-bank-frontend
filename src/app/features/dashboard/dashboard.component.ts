@@ -9,6 +9,7 @@ import {
   CreditCard,
   ArrowLeftRight,
   User,
+  ShieldCheck,
   LogOut,
   Eye,
   EyeOff,
@@ -17,6 +18,7 @@ import {
 } from 'lucide-angular';
 import { AuthService } from '../../core/services/auth.service';
 import { VisibilityService } from '../../core/services/visibility.service';
+import { TokenService } from '../../core/services/token.service';
 
 interface NavItem {
   label: string;
@@ -32,10 +34,11 @@ interface NavItem {
   styleUrl:    './dashboard.component.scss',
 })
 export class DashboardComponent {
-  private readonly auth       = inject(AuthService);
-  readonly visibility         = inject(VisibilityService);
+  private readonly auth = inject(AuthService);
+  readonly visibility   = inject(VisibilityService);
+  readonly tokenService = inject(TokenService);
 
-  readonly icons = { Building2, LayoutDashboard, CreditCard, ArrowLeftRight, User, LogOut, Eye, EyeOff, Menu, X };
+  readonly icons = { Building2, LayoutDashboard, CreditCard, ArrowLeftRight, User, ShieldCheck, LogOut, Eye, EyeOff, Menu, X };
 
   readonly mobileMenuOpen = signal(false);
 
