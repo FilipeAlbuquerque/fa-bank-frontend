@@ -1,0 +1,104 @@
+<div class="accounts-page">
+
+  <!-- ── Header ─────────────────────────────────────────── -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Accounts</h1>
+      <p class="page-subtitle">{{ activeCount() }} active account{{ activeCount() !== 1 ? 's' : '' }}</p>
+    </div>
+    <button class="refresh-btn" (click)="loadAccounts()" [disabled]="loading()" aria-label="Refresh accounts">
+      <lucide-icon [img]="icons.RefreshCw" size="16" [class.spinning]="loading()" />
+    </button>
+  </div>
+
+  <!-- ── Total balance banner ────────────────────────────── -->
+  @if (!loading() && accounts().length > 0) {
+    <div class="total-banner">
+      <span class="total-label">Total across all accounts</span>
+      <div class="total-amount">
+        @if (visibility.valuesVisible()) {
+          <span>{{ totalBalance() | number:'1.2-2' }}</span>
+          <span class="total-currency">EUR</span>
+        } @else {
+          <span class="masked">••••••</span>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ── Loading state ──────────────────────────────────── -->
+  @if (loading()) {
+    <div class="state-container">
+      <div class="spinner"></div>
+      <p class="state-text">Loading accounts...</p>
+    </div>
+  }
+
+  <!-- ── Error state ────────────────────────────────────── -->
+  @if (error()) {
+    <div class="error-banner">
+      <p>{{ error() }}</p>
+      <button class="retry-btn" (click)="loadAccounts()">Try again</button>
+    </div>
+  }
+
+  <!-- ── Empty state ────────────────────────────────────── -->
+  @if (!loading() && !error() && accounts().length === 0) {
+    <div class="state-container">
+      <div class="empty-icon">
+        <lucide-icon [img]="icons.CreditCard" size="32" />
+      </div>
+      <p class="state-title">No accounts found</p>
+      <p class="state-text">Your accounts will appear here once they have been set up by your relationship manager.</p>
+    </div>
+  }
+
+  <!-- ── Accounts list ──────────────────────────────────── -->
+  @if (!loading() && accounts().length > 0) {
+    <div class="accounts-list">
+      @for (account of accounts(); track account.id) {
+        <div class="account-card" (click)="openDetail(account)" role="button" tabindex="0"
+             (keydown.enter)="openDetail(account)" (keydown.space)="openDetail(account)"
+             [attr.aria-label]="'Open ' + typeLabel(account.type) + ' account details'">
+
+          <div class="account-card-left">
+            <div class="account-icon" [class]="'account-icon-' + account.type.toLowerCase()">
+              <lucide-icon [img]="accountIcon(account.type)" size="20" />
+            </div>
+            <div class="account-info">
+              <span class="account-type">{{ typeLabel(account.type) }}</span>
+              <span class="account-number">{{ maskedNumber(account.accountNumber) }}</span>
+              <span class="account-status" [class]="'status-' + account.status.toLowerCase()">
+                {{ account.status }}
+              </span>
+            </div>
+          </div>
+
+          <div class="account-card-right">
+            <div class="account-balance">
+              @if (visibility.valuesVisible()) {
+                <span class="balance-amount">{{ account.balance | number:'1.2-2' }}</span>
+                <span class="balance-currency">EUR</span>
+              } @else {
+                <span class="masked">••••••</span>
+              }
+            </div>
+            @if (account.availableLimit !== null) {
+              <span class="available-limit">
+                Limit:
+                @if (visibility.valuesVisible()) {
+                  {{ account.availableLimit | number:'1.2-2' }} EUR
+                } @else {
+                  ••••••
+                }
+              </span>
+            }
+            <lucide-icon [img]="icons.ChevronRight" size="16" class="chevron" />
+          </div>
+
+        </div>
+      }
+    </div>
+  }
+
+</div>

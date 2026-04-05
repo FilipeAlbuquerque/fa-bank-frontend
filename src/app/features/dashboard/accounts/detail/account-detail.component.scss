@@ -1,0 +1,337 @@
+// ── Tokens ────────────────────────────────────────────────
+$gold:       #C9A227;
+$gold-dark:  #B8860B;
+$surface:    #141414;
+$surface-2:  #1a1a1a;
+$surface-3:  #202020;
+$text:       #f0f0f0;
+$text-muted: rgba(240, 240, 240, 0.45);
+$border:     rgba(201, 162, 39, 0.18);
+
+// ── Page ──────────────────────────────────────────────────
+.detail-page {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// ── Header ─────────────────────────────��──────────────────
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: $text-muted;
+  text-decoration: none;
+  font-size: 0.82rem;
+  transition: color 0.2s;
+  flex-shrink: 0;
+
+  &:hover { color: $gold; }
+}
+
+.header-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.page-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: $text;
+  margin: 0 0 0.1rem;
+}
+
+.page-subtitle {
+  font-size: 0.875rem;
+  color: $text-muted;
+  margin: 0;
+}
+
+.account-num {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+.filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid $border;
+  border-radius: 8px;
+  background: none;
+  color: $text-muted;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+
+  &:hover, &.filter-active {
+    border-color: rgba(201, 162, 39, 0.4);
+    color: $gold;
+  }
+}
+
+// ── Filters panel ──────────────────────���──────────────────
+.filters-panel {
+  background: $surface-2;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 1.25rem;
+  animation: slideDown 0.2s ease both;
+}
+
+.filter-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+  min-width: 130px;
+}
+
+.filter-label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.filter-select,
+.filter-input {
+  padding: 0.55rem 0.75rem;
+  background: $surface-3;
+  border: 1px solid $border;
+  border-radius: 7px;
+  color: $text;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+  appearance: none;
+
+  &:focus { border-color: $gold; }
+
+  // Style date picker calendar icon
+  color-scheme: dark;
+}
+
+.filter-reset {
+  padding: 0.55rem 1rem;
+  border: 1px solid $border;
+  border-radius: 7px;
+  background: none;
+  color: $text-muted;
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s;
+  align-self: flex-end;
+
+  &:hover { color: $gold; border-color: rgba(201, 162, 39, 0.4); }
+}
+
+// ── States ─────────────────────────────��──────────────────
+.state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  gap: 0.75rem;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid $border;
+  border-top-color: $gold;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.state-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: $text;
+  margin: 0;
+}
+
+.state-text {
+  font-size: 0.875rem;
+  color: $text-muted;
+  margin: 0;
+}
+
+.error-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: rgba(139, 0, 0, 0.1);
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  border-radius: 10px;
+  color: #f87171;
+  font-size: 0.875rem;
+  p { margin: 0; }
+}
+
+.retry-btn {
+  background: none;
+  border: 1px solid rgba(139, 0, 0, 0.4);
+  border-radius: 6px;
+  color: #f87171;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+  &:hover { background: rgba(139, 0, 0, 0.15); }
+}
+
+// ── Transaction list ──────────────────────────────────────
+.tx-list {
+  background: $surface-2;
+  border: 1px solid $border;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.tx-row {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.07);
+  transition: background 0.15s;
+
+  &:last-child { border-bottom: none; }
+  &:hover { background: $surface-3; }
+}
+
+.tx-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  flex-shrink: 0;
+
+  &.tx-credit { background: rgba(74, 222, 128, 0.1);  color: #4ade80; }
+  &.tx-debit  { background: rgba(248, 113, 113, 0.08); color: #f87171; }
+}
+
+.tx-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.tx-desc {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $text;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tx-meta {
+  font-size: 0.72rem;
+  color: $text-muted;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tx-counterpart {
+  font-family: 'Courier New', monospace;
+  font-size: 0.68rem;
+}
+
+.tx-amount-col {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.tx-amount {
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+}
+
+.tx-currency {
+  font-size: 0.7rem;
+  color: $text-muted;
+}
+
+.amount-credit .tx-amount { color: #4ade80; }
+.amount-debit  .tx-amount { color: $text; }
+
+// ── Pagination ─────────────────────────────────���──────────
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.page-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: $surface-2;
+  border: 1px solid $border;
+  color: $text-muted;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) { border-color: rgba(201, 162, 39, 0.4); color: $gold; }
+  &:disabled { opacity: 0.35; cursor: not-allowed; }
+}
+
+.page-info {
+  font-size: 0.875rem;
+  color: $text;
+  font-weight: 500;
+}
+
+.page-total {
+  font-size: 0.78rem;
+  color: $text-muted;
+}
+
+// ── Animations ────────────────────────────────────────────
+@keyframes spin     { to { transform: rotate(360deg); } }
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

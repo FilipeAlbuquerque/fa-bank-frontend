@@ -35,13 +35,22 @@ export const routes: Routes = [
           import('./features/dashboard/overview/overview.component').then((m) => m.OverviewComponent),
       },
       {
+        path: 'accounts',
+        loadComponent: () =>
+          import('./features/dashboard/accounts/accounts.component').then((m) => m.AccountsComponent),
+      },
+      {
+        path: 'accounts/:accountNumber',
+        loadComponent: () =>
+          import('./features/dashboard/accounts/detail/account-detail.component').then((m) => m.AccountDetailComponent),
+      },
+      {
         path: 'admin',
         canActivate: [roleGuard(['ROLE_ADMIN'])],
         loadComponent: () =>
           import('./features/dashboard/admin/admin.component').then((m) => m.AdminComponent),
       },
       // Future child routes:
-      // { path: 'accounts', ... }
       // { path: 'transfer', ... }
       // { path: 'profile',  ... }
     ],
