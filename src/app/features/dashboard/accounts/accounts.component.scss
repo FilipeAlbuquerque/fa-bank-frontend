@@ -274,6 +274,14 @@ $border:     rgba(201, 162, 39, 0.18);
   letter-spacing: 0.05em;
 }
 
+.account-iban {
+  font-size: 0.72rem;
+  color: $text-muted;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.03em;
+  opacity: 0.75;
+}
+
 .account-status {
   display: inline-block;
   font-size: 0.68rem;

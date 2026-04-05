@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
 const BASE = environment.apiUrl;
 
 const mockAccount: Account = {
-  id: 1, accountNumber: 'ACC001', type: 'CHECKING', balance: 1000,
+  id: 1, accountNumber: 'ACC001', iban: 'PT50 0033 0001 0000 0ACC0 01', type: 'CHECKING', balance: 1000,
   availableLimit: 2000, status: 'ACTIVE', createdAt: '2026-01-01T00:00:00',
   ownerId: 1, ownerName: 'John', ownerType: 'CLIENT',
 };

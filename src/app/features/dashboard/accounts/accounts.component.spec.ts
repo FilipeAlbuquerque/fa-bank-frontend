@@ -8,9 +8,9 @@ import { AccountService } from '../../../core/services/account.service';
 import { Account } from '../../../core/models/account.model';
 
 const mockAccounts: Account[] = [
-  { id: 1, accountNumber: 'ACC001', type: 'CHECKING', balance: 1000, availableLimit: 2000,
+  { id: 1, accountNumber: 'ACC001', iban: 'PT50 0033 0001 0000 0ACC0 01', type: 'CHECKING', balance: 1000, availableLimit: 2000,
     status: 'ACTIVE', createdAt: '2026-01-01T00:00:00', ownerId: 1, ownerName: 'John', ownerType: 'CLIENT' },
-  { id: 2, accountNumber: 'ACC002', type: 'SAVINGS', balance: 5000, availableLimit: null,
+  { id: 2, accountNumber: 'ACC002', iban: 'PT50 0033 0001 0000 0ACC0 02', type: 'SAVINGS', balance: 5000, availableLimit: null,
     status: 'ACTIVE', createdAt: '2026-01-01T00:00:00', ownerId: 1, ownerName: 'John', ownerType: 'CLIENT' },
 ];
 

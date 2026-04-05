@@ -68,6 +68,7 @@
             <div class="account-info">
               <span class="account-type">{{ typeLabel(account.type) }}</span>
               <span class="account-number">{{ maskedNumber(account.accountNumber) }}</span>
+              <span class="account-iban">{{ maskedIban(account.iban) }}</span>
               <span class="account-status" [class]="'status-' + account.status.toLowerCase()">
                 {{ account.status }}
               </span>
