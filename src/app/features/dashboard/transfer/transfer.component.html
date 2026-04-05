@@ -1,0 +1,164 @@
+<div class="transfer-page">
+
+  <!-- ── Header ─────────────────────────────────────────── -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Transfer</h1>
+      <p class="page-subtitle">Send money between accounts</p>
+    </div>
+    <div class="header-icon">
+      <lucide-icon [img]="icons.ArrowRightLeft" size="22" />
+    </div>
+  </div>
+
+  <!-- ── Loading ────────────────────────────────────────── -->
+  @if (loading()) {
+    <div class="state-container">
+      <div class="spinner"></div>
+      <p class="state-text">Loading accounts...</p>
+    </div>
+  }
+
+  <!-- ── Success ────────────────────────────────────────── -->
+  @if (successTxId()) {
+    <div class="success-card">
+      <div class="success-icon">
+        <lucide-icon [img]="icons.CheckCircle" size="40" />
+      </div>
+      <h2 class="success-title">Transfer Successful</h2>
+      <p class="success-subtitle">Your transfer has been processed.</p>
+      <p class="success-tx-id">Transaction ID: <strong>{{ successTxId() }}</strong></p>
+      <button class="btn-primary" (click)="newTransfer()" type="button">
+        Make another transfer
+      </button>
+    </div>
+  }
+
+  <!-- ── Form ───────────────────────────────────────────── -->
+  @if (!loading() && !successTxId()) {
+    <div class="transfer-card">
+
+      <!-- Error banner -->
+      @if (error()) {
+        <div class="error-banner">
+          <lucide-icon [img]="icons.AlertCircle" size="16" />
+          <span>{{ error() }}</span>
+        </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+        <!-- From account -->
+        <div class="field-group">
+          <label class="field-label" for="sourceAccount">From account</label>
+          <p-select
+            inputId="sourceAccount"
+            formControlName="sourceAccount"
+            [options]="accounts()"
+            optionLabel="accountNumber"
+            placeholder="Select an account"
+            styleClass="transfer-select"
+            [class.field-error]="form.get('sourceAccount')!.invalid && form.get('sourceAccount')!.touched"
+          >
+            <ng-template pTemplate="selectedItem" let-acc>
+              @if (acc) {
+                <div class="selected-account">
+                  <span class="selected-label">{{ accountLabel(acc) }}</span>
+                  @if (visibility.valuesVisible()) {
+                    <span class="selected-balance">{{ acc.balance | number:'1.2-2' }} EUR</span>
+                  } @else {
+                    <span class="selected-balance">•••••• EUR</span>
+                  }
+                </div>
+              }
+            </ng-template>
+            <ng-template pTemplate="item" let-acc>
+              <div class="dropdown-account">
+                <span class="dropdown-label">{{ accountLabel(acc) }}</span>
+                @if (visibility.valuesVisible()) {
+                  <span class="dropdown-balance">{{ acc.balance | number:'1.2-2' }} EUR</span>
+                } @else {
+                  <span class="dropdown-balance">•••••• EUR</span>
+                }
+              </div>
+            </ng-template>
+          </p-select>
+          @if (form.get('sourceAccount')!.invalid && form.get('sourceAccount')!.touched) {
+            <span class="field-error-msg">Please select a source account.</span>
+          }
+        </div>
+
+        <!-- Destination account number -->
+        <div class="field-group">
+          <label class="field-label" for="destinationAccountNumber">To account number</label>
+          <input
+            id="destinationAccountNumber"
+            type="text"
+            class="field-input"
+            formControlName="destinationAccountNumber"
+            placeholder="Enter destination account number"
+            autocomplete="off"
+            [class.field-error]="form.get('destinationAccountNumber')!.invalid && form.get('destinationAccountNumber')!.touched"
+          />
+          @if (form.get('destinationAccountNumber')!.invalid && form.get('destinationAccountNumber')!.touched) {
+            <span class="field-error-msg">Please enter a valid account number.</span>
+          }
+        </div>
+
+        <!-- Amount -->
+        <div class="field-group">
+          <label class="field-label" for="amount">Amount (EUR)</label>
+          <div class="amount-wrapper">
+            <span class="amount-prefix">€</span>
+            <input
+              id="amount"
+              type="number"
+              class="field-input amount-input"
+              formControlName="amount"
+              placeholder="0.00"
+              min="0.01"
+              step="0.01"
+              [class.field-error]="form.get('amount')!.invalid && form.get('amount')!.touched"
+            />
+          </div>
+          @if (sourceBalance() !== null && visibility.valuesVisible()) {
+            <span class="balance-hint">Available: {{ sourceBalance() | number:'1.2-2' }} EUR</span>
+          }
+          @if (form.get('amount')!.invalid && form.get('amount')!.touched) {
+            <span class="field-error-msg">Please enter a valid amount greater than 0.</span>
+          }
+        </div>
+
+        <!-- Description -->
+        <div class="field-group">
+          <label class="field-label" for="description">Description <span class="optional">(optional)</span></label>
+          <input
+            id="description"
+            type="text"
+            class="field-input"
+            formControlName="description"
+            placeholder="e.g. Rent, Invoice #123"
+            maxlength="100"
+          />
+        </div>
+
+        <!-- Submit -->
+        <button
+          class="btn-primary"
+          type="submit"
+          [disabled]="form.invalid || submitting()"
+        >
+          @if (submitting()) {
+            <div class="btn-spinner"></div>
+            <span>Processing...</span>
+          } @else {
+            <lucide-icon [img]="icons.Send" size="16" />
+            <span>Send Transfer</span>
+          }
+        </button>
+
+      </form>
+    </div>
+  }
+
+</div>

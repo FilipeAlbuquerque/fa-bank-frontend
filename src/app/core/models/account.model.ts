@@ -40,6 +40,13 @@ export interface Statement {
   transactions:       Transaction[];
 }
 
+export interface TransferRequest {
+  sourceAccountNumber:      string;
+  destinationAccountNumber: string;
+  amount:                   number;
+  description?:             string;
+}
+
 export interface Page<T> {
   content:          T[];
   totalElements:    number;

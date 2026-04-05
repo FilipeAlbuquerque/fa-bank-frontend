@@ -1,0 +1,351 @@
+// ── Tokens ────────────────────────────────────────────────
+$gold:       #C9A227;
+$gold-dark:  #B8860B;
+$gold-light: #D4AF37;
+$surface:    #141414;
+$surface-2:  #1a1a1a;
+$surface-3:  #202020;
+$text:       #f0f0f0;
+$text-muted: rgba(240, 240, 240, 0.45);
+$border:     rgba(201, 162, 39, 0.18);
+
+// ── Page ──────────────────────────────────────────────────
+.transfer-page {
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// ── Header ────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.page-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: $text;
+  margin: 0 0 0.2rem;
+}
+
+.page-subtitle {
+  font-size: 0.875rem;
+  color: $text-muted;
+  margin: 0;
+}
+
+.header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(201, 162, 39, 0.08);
+  border: 1px solid $border;
+  color: $gold;
+  flex-shrink: 0;
+}
+
+// ── State containers ──────────────────────────────────────
+.state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 2rem;
+  gap: 0.75rem;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid $border;
+  border-top-color: $gold;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.state-text {
+  font-size: 0.875rem;
+  color: $text-muted;
+  margin: 0;
+}
+
+// ── Success card ──────────────────────────────────────────
+.success-card {
+  background: $surface-2;
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.success-icon {
+  color: #86efac; /* NOSONAR */
+  margin-bottom: 0.5rem;
+}
+
+.success-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: $text;
+  margin: 0;
+}
+
+.success-subtitle {
+  font-size: 0.9rem;
+  color: $text-muted;
+  margin: 0;
+}
+
+.success-tx-id {
+  font-size: 0.78rem;
+  color: $text-muted;
+  font-family: 'Courier New', monospace;
+  background: $surface-3;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  margin: 0.25rem 0 0.75rem;
+
+  strong { color: $text; }
+}
+
+// ── Transfer card ──────────────────────────────────────────
+.transfer-card {
+  background: $surface-2;
+  border: 1px solid $border;
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 2rem; right: 2rem; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,162,39,0.3), transparent);
+  }
+}
+
+// ── Error banner ──────────────────────────────────────────
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.875rem 1rem;
+  background: rgba(139, 0, 0, 0.1);
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  border-radius: 8px;
+  color: #fca5a5; /* NOSONAR */
+  font-size: 0.875rem;
+}
+
+// ── Form fields ───────────────────────────────────────────
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.optional {
+  text-transform: none;
+  font-weight: 400;
+  font-size: 0.72rem;
+}
+
+.field-input {
+  padding: 0.7rem 0.9rem;
+  background: $surface-3;
+  border: 1px solid $border;
+  border-radius: 8px;
+  color: $text;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+
+  &::placeholder { color: $text-muted; }
+  &:focus { border-color: rgba(201, 162, 39, 0.5); }
+  &.field-error { border-color: rgba(248, 113, 113, 0.5); }
+
+  // Remove number input arrows
+  &[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button { display: none; }
+  }
+}
+
+.field-error-msg {
+  font-size: 0.75rem;
+  color: #fca5a5; /* NOSONAR */
+}
+
+// ── Amount field ──────────────────────────────────────────
+.amount-wrapper {
+  display: flex;
+  align-items: center;
+  background: $surface-3;
+  border: 1px solid $border;
+  border-radius: 8px;
+  transition: border-color 0.2s;
+
+  &:focus-within { border-color: rgba(201, 162, 39, 0.5); }
+}
+
+.amount-prefix {
+  padding: 0 0 0 0.9rem;
+  font-size: 0.9rem;
+  color: $text-muted;
+  flex-shrink: 0;
+}
+
+.amount-input {
+  background: none;
+  border: none;
+  border-radius: 0;
+
+  &:focus { border-color: transparent; }
+  &.field-error { border-color: transparent; }
+}
+
+.balance-hint {
+  font-size: 0.75rem;
+  color: $text-muted;
+}
+
+// ── PrimeNG select overrides ──────────────────────────────
+:host ::ng-deep .transfer-select {
+  width: 100%;
+
+  .p-select {
+    width: 100%;
+    background: $surface-3;
+    border: 1px solid $border;
+    border-radius: 8px;
+    color: $text;
+    transition: border-color 0.2s;
+
+    &:hover, &.p-focus { border-color: rgba(201, 162, 39, 0.5); }
+  }
+
+  .p-select-label { padding: 0.7rem 0.9rem; font-size: 0.9rem; color: $text; }
+
+  .p-select-dropdown { color: $text-muted; }
+
+  .p-select-panel {
+    background: $surface-2;
+    border: 1px solid $border;
+    border-radius: 8px;
+  }
+
+  .p-select-option {
+    color: $text;
+    &:hover, &.p-highlight { background: $surface-3; }
+  }
+}
+
+.selected-account {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+}
+
+.selected-label { font-size: 0.9rem; }
+
+.selected-balance {
+  font-size: 0.78rem;
+  color: $text-muted;
+}
+
+.dropdown-account {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.1rem 0;
+  width: 100%;
+  gap: 1rem;
+}
+
+.dropdown-label { font-size: 0.875rem; }
+
+.dropdown-balance {
+  font-size: 0.78rem;
+  color: $text-muted;
+}
+
+// ── Submit button ─────────────────────────────────────────
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.85rem;
+  background: linear-gradient(135deg, $gold-dark, $gold);
+  border: none;
+  border-radius: 10px;
+  color: #0a0a0a;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  margin-top: 0.25rem;
+
+  &:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+  &:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+}
+
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top-color: #0a0a0a;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+// ── Responsive ────────────────────────────────────────────
+@media (max-width: 480px) {
+  .transfer-page { gap: 1rem; }
+
+  .page-title { font-size: 1.4rem; }
+
+  .transfer-card { padding: 1.25rem; }
+
+  .success-card { padding: 2rem 1.25rem; }
+}
+
+// ── Animations ────────────────────────────────────────────
+@keyframes spin { to { transform: rotate(360deg); } }
