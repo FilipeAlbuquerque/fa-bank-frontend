@@ -334,6 +334,23 @@ $border:      rgba(201, 162, 39, 0.18);
 .tx-credit { color: #4ade80; }
 .tx-debit  { color: $text; }
 
+// ── Responsive ────────────────────────────────────────────
+@media (max-width: 540px) {
+  .overview { gap: 1.25rem; }
+
+  .page-title { font-size: 1.4rem; }
+
+  .summary-card { padding: 1.1rem; }
+
+  .summary-amount { font-size: 1.6rem; }
+}
+
+@media (max-width: 480px) {
+  .page-title { font-size: 1.25rem; }
+
+  .action-btn { flex: 1 1 calc(50% - 0.375rem); justify-content: center; }
+}
+
 // ── Quick actions ─────────────────────────────────────────
 .quick-actions {
   background: $surface-2;

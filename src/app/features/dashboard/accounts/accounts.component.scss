@@ -345,3 +345,23 @@ $border:     rgba(201, 162, 39, 0.18);
     transform: translateX(2px);
   }
 }
+
+// ── Responsive ────────────────────────────────────────────
+@media (max-width: 480px) {
+  .accounts-page { gap: 1rem; }
+
+  .page-title { font-size: 1.4rem; }
+
+  .total-banner { padding: 1.25rem 1rem; }
+
+  .total-amount { font-size: 1.5rem; }
+
+  .account-card { padding: 1rem; }
+
+  .account-card-right { gap: 0.75rem; }
+
+  .balance-amount { font-size: 0.95rem; }
+
+  // IBAN is too long for very small screens; hide gracefully
+  .account-iban { display: none; }
+}
