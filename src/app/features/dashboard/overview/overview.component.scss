@@ -96,7 +96,7 @@ $border:      rgba(201, 162, 39, 0.18);
 .summary-badge {
   font-size: 0.7rem;
   color: #c9a227; /* NOSONAR */
-  background: rgba(201, 162, 39, 0.08);
+  background: rgba(201, 162, 39, 0.08); /* NOSONAR */
   border: 1px solid rgba(201, 162, 39, 0.2);
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
