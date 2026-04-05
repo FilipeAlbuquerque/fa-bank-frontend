@@ -58,7 +58,7 @@ export class RegisterComponent {
       Validators.required,
       emailFormatValidator,
     ]],
-    countryCode: [DEFAULT_COUNTRY as Country, [Validators.required]],
+    countryCode: [DEFAULT_COUNTRY, [Validators.required]],
     phoneNumber: ['', [
       Validators.required,
       localPhoneValidator,

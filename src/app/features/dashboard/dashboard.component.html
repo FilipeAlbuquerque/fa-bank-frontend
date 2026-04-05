@@ -1,4 +1,4 @@
-<div class="dashboard-layout">
+<div class="dashboard-layout" aria-label="Dashboard">
 
   <!-- ── Sidebar (desktop) ──────────────────────────────── -->
   <aside class="sidebar">
@@ -52,9 +52,10 @@
 
   <!-- ── Mobile overlay ────────────────────────────────── -->
   @if (mobileMenuOpen()) {
-    <div class="mobile-overlay" (click)="closeMobileMenu()" aria-hidden="true"></div>
+    <div class="mobile-overlay" (click)="closeMobileMenu()" (keydown)="closeMobileMenu()"
+         aria-hidden="true" tabindex="-1"></div>
 
-    <aside class="sidebar sidebar-mobile" role="navigation" aria-label="Mobile navigation">
+    <nav class="sidebar sidebar-mobile" aria-label="Mobile navigation">
       <div class="sidebar-brand">
         <div class="brand-logo">
           <lucide-icon [img]="icons.Building2" size="22" />
@@ -65,7 +66,7 @@
         </button>
       </div>
 
-      <nav class="sidebar-nav">
+      <nav class="sidebar-nav" aria-label="Mobile navigation items">
         @for (item of navItems; track item.path) {
           <a
             class="nav-item"
@@ -99,10 +100,10 @@
           <span>Sign Out</span>
         </button>
       </div>
-    </aside>
+    </nav>
   }
 
-  <!-- ── Main area ──────────────────────────────────────── -->
+  <!-- ── Main area ──────────────────────────────────────────── -->
   <div class="main-area">
 
     <!-- Top header -->

@@ -44,7 +44,7 @@ export const hasNumberValidator: ValidatorFn = (
   control: AbstractControl
 ): ValidationErrors | null => {
   if (!control.value) return null;
-  return /[0-9]/.test(control.value) ? null : { hasNumber: true };
+  return /\d/.test(control.value) ? null : { hasNumber: true };
 };
 
 /** Requires at least one special character. */
@@ -65,7 +65,7 @@ export const namePatternValidator: ValidatorFn = (
   control: AbstractControl
 ): ValidationErrors | null => {
   if (!control.value) return null;
-  return /^[\p{L}\s'\-]+$/u.test(control.value)
+  return /^[\p{L}\s'-]+$/u.test(control.value)
     ? null
     : { namePattern: true };
 };
@@ -81,7 +81,7 @@ export const emailFormatValidator: ValidatorFn = (
   control: AbstractControl
 ): ValidationErrors | null => {
   if (!control.value) return null;
-  const pattern = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return pattern.test(control.value) ? null : { emailFormat: true };
 };
 
@@ -97,7 +97,7 @@ export const phoneValidator: ValidatorFn = (
 ): ValidationErrors | null => {
   if (!control.value) return null;
   const raw: string = control.value;
-  const digitsOnly = raw.replace(/[\s\-()+]/g, '');
+  const digitsOnly = raw.replaceAll(/[\s()+-]/g, '');
   const formatOk = /^[+\d(][\d\s\-()+]*$/.test(raw);
   const lengthOk = digitsOnly.length >= 7 && digitsOnly.length <= 15;
   return formatOk && lengthOk ? null : { phoneFormat: true };
@@ -112,7 +112,7 @@ export const localPhoneValidator: ValidatorFn = (
 ): ValidationErrors | null => {
   if (!control.value) return null;
   const raw: string = String(control.value);
-  const digitsOnly = raw.replace(/[\s\-]/g, '');
+  const digitsOnly = raw.replaceAll(/[\s-]/g, '');
   if (!/^\d+$/.test(digitsOnly)) return { phoneFormat: true };
   if (digitsOnly.length < 4 || digitsOnly.length > 15) return { phoneFormat: true };
   return null;

@@ -72,7 +72,12 @@ export class AccountsComponent implements OnInit {
 
   maskedNumber(accountNumber: string): string {
     if (!this.visibility.valuesVisible()) return '•••• •••• ••••';
-    const n = accountNumber.replace(/\D/g, '');
+    const n = accountNumber.replaceAll(/\D/g, '');
     return n.length >= 4 ? `•••• •••• ${n.slice(-4)}` : accountNumber;
+  }
+
+  maskedIban(iban: string): string {
+    if (!this.visibility.valuesVisible()) return 'PT•• •••• •••• •••• •••• ••••';
+    return iban;
   }
 }

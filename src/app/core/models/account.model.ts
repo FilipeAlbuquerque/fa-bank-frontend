@@ -6,6 +6,7 @@ export type TransactionStatus = 'PENDING' | 'COMPLETED' | 'FAILED' | 'REVERSED';
 export interface Account {
   id:             number;
   accountNumber:  string;
+  iban:           string;
   type:           AccountType;
   balance:        number;
   availableLimit: number | null;

@@ -7,12 +7,12 @@ import { Account, Transaction } from '../../../core/models/account.model';
 
 const mockAccounts: Account[] = [
   {
-    id: 1, accountNumber: '1234567890', type: 'CHECKING', balance: 1000,
+    id: 1, accountNumber: '1234567890', iban: 'PT50 0033 0001 0012 3456 7890 5', type: 'CHECKING', balance: 1000,
     availableLimit: 500, status: 'ACTIVE', createdAt: '2026-01-01T00:00:00',
     ownerId: 1, ownerName: 'Test', ownerType: 'CLIENT',
   },
   {
-    id: 2, accountNumber: '0987654321', type: 'SAVINGS', balance: 2000,
+    id: 2, accountNumber: '0987654321', iban: 'PT50 0033 0001 0098 7654 3210 5', type: 'SAVINGS', balance: 2000,
     availableLimit: null, status: 'ACTIVE', createdAt: '2026-01-01T00:00:00',
     ownerId: 1, ownerName: 'Test', ownerType: 'CLIENT',
   },
