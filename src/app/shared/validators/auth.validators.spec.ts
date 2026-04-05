@@ -5,6 +5,9 @@ import {
   hasLowercaseValidator,
   hasNumberValidator,
   hasSpecialCharValidator,
+  namePatternValidator,
+  emailFormatValidator,
+  phoneValidator,
 } from './auth.validators';
 
 const ctrl = (value: string) => new FormControl(value);
@@ -15,7 +18,7 @@ describe('usernamePatternValidator', () => {
     expect(usernamePatternValidator(ctrl('ABC'))).toBeNull();
   });
 
-  it('should return error for usernames with spaces or symbols', () => {
+  it('should return error for spaces or symbols', () => {
     expect(usernamePatternValidator(ctrl('john doe'))).toEqual({ usernamePattern: true });
     expect(usernamePatternValidator(ctrl('user@name'))).toEqual({ usernamePattern: true });
     expect(usernamePatternValidator(ctrl('user!name'))).toEqual({ usernamePattern: true });
@@ -81,5 +84,72 @@ describe('hasSpecialCharValidator', () => {
 
   it('should return null for empty value', () => {
     expect(hasSpecialCharValidator(ctrl(''))).toBeNull();
+  });
+});
+
+describe('namePatternValidator', () => {
+  it('should return null for simple names', () => {
+    expect(namePatternValidator(ctrl('John'))).toBeNull();
+    expect(namePatternValidator(ctrl('Smith'))).toBeNull();
+  });
+
+  it('should return null for international and compound names', () => {
+    expect(namePatternValidator(ctrl("O'Brien"))).toBeNull();
+    expect(namePatternValidator(ctrl('Mary-Jane'))).toBeNull();
+    expect(namePatternValidator(ctrl('José'))).toBeNull();
+    expect(namePatternValidator(ctrl('van der Berg'))).toBeNull();
+  });
+
+  it('should return error for names with digits or symbols', () => {
+    expect(namePatternValidator(ctrl('John1'))).toEqual({ namePattern: true });
+    expect(namePatternValidator(ctrl('John@'))).toEqual({ namePattern: true });
+    expect(namePatternValidator(ctrl('John.'))).toEqual({ namePattern: true });
+  });
+
+  it('should return null for empty value', () => {
+    expect(namePatternValidator(ctrl(''))).toBeNull();
+  });
+});
+
+describe('emailFormatValidator', () => {
+  it('should return null for valid email addresses', () => {
+    expect(emailFormatValidator(ctrl('user@example.com'))).toBeNull();
+    expect(emailFormatValidator(ctrl('first.last+tag@sub.domain.org'))).toBeNull();
+    expect(emailFormatValidator(ctrl('user_123@my-domain.io'))).toBeNull();
+  });
+
+  it('should return error for invalid email addresses', () => {
+    expect(emailFormatValidator(ctrl('a@b'))).toEqual({ emailFormat: true });
+    expect(emailFormatValidator(ctrl('user@.com'))).toEqual({ emailFormat: true });
+    expect(emailFormatValidator(ctrl('@domain.com'))).toEqual({ emailFormat: true });
+    expect(emailFormatValidator(ctrl('nodomain'))).toEqual({ emailFormat: true });
+    expect(emailFormatValidator(ctrl('missing@tld.'))).toEqual({ emailFormat: true });
+  });
+
+  it('should return null for empty value', () => {
+    expect(emailFormatValidator(ctrl(''))).toBeNull();
+  });
+});
+
+describe('phoneValidator', () => {
+  it('should return null for valid phone numbers', () => {
+    expect(phoneValidator(ctrl('+1 555 000 0000'))).toBeNull();
+    expect(phoneValidator(ctrl('+44 20 7946 0958'))).toBeNull();
+    expect(phoneValidator(ctrl('+351 912 345 678'))).toBeNull();
+    expect(phoneValidator(ctrl('555-000-0000'))).toBeNull();
+    expect(phoneValidator(ctrl('(555) 000-0000'))).toBeNull();
+  });
+
+  it('should return error for too short numbers', () => {
+    expect(phoneValidator(ctrl('123'))).toEqual({ phoneFormat: true });
+  });
+
+  it('should return error for numbers with invalid characters', () => {
+    expect(phoneValidator(ctrl('phone: 123'))).toEqual({ phoneFormat: true });
+    expect(phoneValidator(ctrl('abc-def-ghij'))).toEqual({ phoneFormat: true });
+  });
+
+  it('should return null for empty value', () => {
+    expect(phoneValidator(ctrl(''))).toBeNull();
   });
 });

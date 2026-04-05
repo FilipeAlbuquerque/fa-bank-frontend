@@ -154,6 +154,22 @@ $border:     rgba(201, 162, 39, 0.22);
   text-transform: uppercase;
 }
 
+.field-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.char-counter {
+  font-size: 0.7rem;
+  color: $text-muted;
+  transition: color 0.2s;
+
+  &.char-counter-warn {
+    color: #B8860B;
+  }
+}
+
 .label-optional {
   font-weight: 400;
   color: $text-muted;

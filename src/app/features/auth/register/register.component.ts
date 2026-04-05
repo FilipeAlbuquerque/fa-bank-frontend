@@ -5,7 +5,13 @@ import { Router, RouterLink } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
-import { LucideAngularModule, Building2, ArrowLeft, User, Mail, Lock, Phone } from 'lucide-angular';
+import { LucideAngularModule, Building2, ArrowLeft, User, Mail, Phone } from 'lucide-angular';
+import {
+  NAME_MIN, NAME_MAX, MESSAGE_MAX,
+  namePatternValidator,
+  emailFormatValidator,
+  phoneValidator,
+} from '../../../shared/validators/auth.validators';
 
 @Component({
   selector: 'app-register',
@@ -23,21 +29,45 @@ import { LucideAngularModule, Building2, ArrowLeft, User, Mail, Lock, Phone } fr
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
-  private readonly fb = inject(FormBuilder);
+  private readonly fb     = inject(FormBuilder);
   private readonly router = inject(Router);
 
-  readonly icons = { Building2, ArrowLeft, User, Mail, Lock, Phone };
+  readonly icons = { Building2, ArrowLeft, User, Mail, Phone };
 
   readonly submitted = signal(false);
-  readonly loading = signal(false);
+  readonly loading   = signal(false);
+
+  readonly MESSAGE_MAX = MESSAGE_MAX;
 
   readonly form = this.fb.group({
-    firstName:  ['', [Validators.required, Validators.minLength(2)]],
-    lastName:   ['', [Validators.required, Validators.minLength(2)]],
-    email:      ['', [Validators.required, Validators.email]],
-    phone:      ['', [Validators.required]],
-    message:    [''],
+    firstName: ['', [
+      Validators.required,
+      Validators.minLength(NAME_MIN),
+      Validators.maxLength(NAME_MAX),
+      namePatternValidator,
+    ]],
+    lastName: ['', [
+      Validators.required,
+      Validators.minLength(NAME_MIN),
+      Validators.maxLength(NAME_MAX),
+      namePatternValidator,
+    ]],
+    email: ['', [
+      Validators.required,
+      emailFormatValidator,
+    ]],
+    phone: ['', [
+      Validators.required,
+      phoneValidator,
+    ]],
+    message: ['', [
+      Validators.maxLength(MESSAGE_MAX),
+    ]],
   });
+
+  get messageLength(): number {
+    return this.form.get('message')!.value?.length ?? 0;
+  }
 
   onSubmit(): void {
     if (this.form.invalid) {
