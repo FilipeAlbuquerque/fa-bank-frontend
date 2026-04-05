@@ -56,7 +56,7 @@
         </div>
       }
 
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="form-fields">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate autocomplete="off" class="form-fields">
 
         <!-- Username -->
         <div class="field-group">
@@ -69,7 +69,7 @@
               type="text"
               formControlName="username"
               placeholder="your username"
-              autocomplete="username"
+              autocomplete="off"
               class="field-input"
             />
           </div>
@@ -94,7 +94,7 @@
               [toggleMask]="true"
               styleClass="w-full"
               inputStyleClass="field-input pl-10"
-              autocomplete="current-password"
+              autocomplete="new-password"
             />
           </div>
           @if (password.invalid && password.touched) {
