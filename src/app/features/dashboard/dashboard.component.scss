@@ -1,0 +1,258 @@
+// ── Tokens ────────────────────────────────────────────────
+$gold:        #C9A227;
+$gold-dark:   #B8860B;
+$gold-light:  #D4AF37;
+$black:       #0a0a0a;
+$surface:     #141414;
+$surface-2:   #1a1a1a;
+$surface-3:   #202020;
+$text:        #f0f0f0;
+$text-muted:  rgba(240, 240, 240, 0.45);
+$border:      rgba(201, 162, 39, 0.18);
+$sidebar-w:   240px;
+
+// ── Layout ────────────────────────────────────────────────
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: $black;
+}
+
+// ── Sidebar ───────────────────────────────────────────────
+.sidebar {
+  width: $sidebar-w;
+  flex-shrink: 0;
+  background: $surface;
+  border-right: 1px solid $border;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 100;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.sidebar-mobile {
+  display: flex !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 300;
+  animation: slideInLeft 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 200;
+  animation: fadeIn 0.2s ease both;
+}
+
+// ── Brand ─────────────────────────────────────────────────
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem 1.25rem 1.25rem;
+  border-bottom: 1px solid $border;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(201, 162, 39, 0.1);
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  color: $gold;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: $text;
+  letter-spacing: 0.02em;
+}
+
+.mobile-close-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: $text-muted;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+
+  &:hover { color: $text; }
+}
+
+// ── Navigation ────────────────────────────────────────────
+.sidebar-nav {
+  flex: 1;
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  overflow-y: auto;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.875rem;
+  border-radius: 8px;
+  color: $text-muted;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: rgba(201, 162, 39, 0.06);
+    color: $text;
+  }
+
+  &.nav-item-active {
+    background: rgba(201, 162, 39, 0.1);
+    color: $gold;
+
+    .nav-icon { color: $gold; }
+  }
+}
+
+.nav-icon {
+  color: inherit;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+// ── Sidebar footer ────────────────────────────────────────
+.sidebar-footer {
+  padding: 0.75rem;
+  border-top: 1px solid $border;
+}
+
+.nav-logout {
+  color: $text-muted;
+
+  &:hover {
+    background: rgba(139, 0, 0, 0.12);
+    color: #e05555;
+  }
+}
+
+// ── Main area ─────────────────────────────────────────────
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin-left: $sidebar-w;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+}
+
+// ── Topbar ────────────────────────────────────────────────
+.topbar {
+  height: 60px;
+  background: $surface;
+  border-bottom: 1px solid $border;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.hamburger-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: $text-muted;
+  cursor: pointer;
+  padding: 0.3rem;
+  transition: color 0.2s;
+
+  &:hover { color: $text; }
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}
+
+.topbar-spacer {
+  flex: 1;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: none;
+  border: 1px solid transparent;
+  color: $text-muted;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+
+  &:hover {
+    background: rgba(201, 162, 39, 0.08);
+    border-color: $border;
+    color: $gold;
+  }
+}
+
+// ── Page content ──────────────────────────────────────────
+.page-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+
+  @media (max-width: 640px) {
+    padding: 1.25rem 1rem;
+  }
+}
+
+// ── Animations ────────────────────────────────────────────
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

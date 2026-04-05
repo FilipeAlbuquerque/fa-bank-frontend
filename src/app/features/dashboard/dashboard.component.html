@@ -1,0 +1,117 @@
+<div class="dashboard-layout">
+
+  <!-- ── Sidebar (desktop) ──────────────────────────────── -->
+  <aside class="sidebar">
+
+    <!-- Brand -->
+    <div class="sidebar-brand">
+      <div class="brand-logo">
+        <lucide-icon [img]="icons.Building2" size="22" />
+      </div>
+      <span class="brand-name">FA Bank</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav" role="navigation" aria-label="Main navigation">
+      @for (item of navItems; track item.path) {
+        <a
+          class="nav-item"
+          [routerLink]="item.path"
+          routerLinkActive="nav-item-active"
+          [routerLinkActiveOptions]="{ exact: false }"
+          (click)="closeMobileMenu()"
+        >
+          <lucide-icon [img]="item.icon" size="18" class="nav-icon" />
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+
+    <!-- Sidebar footer -->
+    <div class="sidebar-footer">
+      <button class="nav-item nav-logout" (click)="logout()" aria-label="Sign out">
+        <lucide-icon [img]="icons.LogOut" size="18" class="nav-icon" />
+        <span>Sign Out</span>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- ── Mobile overlay ────────────────────────────────── -->
+  @if (mobileMenuOpen()) {
+    <div class="mobile-overlay" (click)="closeMobileMenu()" aria-hidden="true"></div>
+
+    <aside class="sidebar sidebar-mobile" role="navigation" aria-label="Mobile navigation">
+      <div class="sidebar-brand">
+        <div class="brand-logo">
+          <lucide-icon [img]="icons.Building2" size="22" />
+        </div>
+        <span class="brand-name">FA Bank</span>
+        <button class="mobile-close-btn" (click)="closeMobileMenu()" aria-label="Close menu">
+          <lucide-icon [img]="icons.X" size="20" />
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        @for (item of navItems; track item.path) {
+          <a
+            class="nav-item"
+            [routerLink]="item.path"
+            routerLinkActive="nav-item-active"
+            [routerLinkActiveOptions]="{ exact: false }"
+            (click)="closeMobileMenu()"
+          >
+            <lucide-icon [img]="item.icon" size="18" class="nav-icon" />
+            <span>{{ item.label }}</span>
+          </a>
+        }
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="nav-item nav-logout" (click)="logout()">
+          <lucide-icon [img]="icons.LogOut" size="18" class="nav-icon" />
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+  }
+
+  <!-- ── Main area ──────────────────────────────────────── -->
+  <div class="main-area">
+
+    <!-- Top header -->
+    <header class="topbar">
+      <!-- Hamburger (mobile) -->
+      <button class="hamburger-btn" (click)="toggleMobileMenu()" aria-label="Open menu">
+        <lucide-icon [img]="icons.Menu" size="22" />
+      </button>
+
+      <!-- Page title slot (filled by child via title service in the future) -->
+      <div class="topbar-spacer"></div>
+
+      <!-- Actions -->
+      <div class="topbar-actions">
+        <!-- Visibility toggle -->
+        <button
+          class="icon-btn"
+          (click)="toggleVisibility()"
+          [attr.aria-label]="visibility.valuesVisible() ? 'Hide values' : 'Show values'"
+          [title]="visibility.valuesVisible() ? 'Hide values' : 'Show values'"
+        >
+          @if (visibility.valuesVisible()) {
+            <lucide-icon [img]="icons.Eye" size="18" />
+          } @else {
+            <lucide-icon [img]="icons.EyeOff" size="18" />
+          }
+        </button>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <main class="page-content">
+      <router-outlet />
+    </main>
+
+  </div>
+
+</div>

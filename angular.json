@@ -79,8 +79,7 @@
               "src/environments/**",
               "src/**/*.spec.ts",
               "src/**/*.html",
-              "src/app/app.routes.ts",
-              "src/app/features/dashboard/**"
+              "src/app/app.routes.ts"
             ],
             "coverageThresholds": {
               "lines": 80,
