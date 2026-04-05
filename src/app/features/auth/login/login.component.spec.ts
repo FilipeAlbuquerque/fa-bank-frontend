@@ -41,23 +41,77 @@ describe('LoginComponent', () => {
     expect(comp.form.invalid).toBe(true);
   });
 
-  it('should be invalid when username is too short', () => {
+  // ── Username validation ──────────────────────────────────
+
+  it('should error when username is too short', () => {
     const { componentInstance: comp } = createComponent();
-    comp.form.setValue({ username: 'ab', password: 'validpassword' });
+    comp.form.setValue({ username: 'ab', password: 'Valid1@pass' });
     expect(comp.username.errors?.['minlength']).toBeTruthy();
   });
 
-  it('should be invalid when password is too short', () => {
+  it('should error when username exceeds 30 characters', () => {
     const { componentInstance: comp } = createComponent();
-    comp.form.setValue({ username: 'validuser', password: '123' });
+    comp.form.setValue({ username: 'a'.repeat(31), password: 'Valid1@pass' });
+    expect(comp.username.errors?.['maxlength']).toBeTruthy();
+  });
+
+  it('should error when username contains invalid characters', () => {
+    const { componentInstance: comp } = createComponent();
+    comp.form.setValue({ username: 'user name!', password: 'Valid1@pass' });
+    expect(comp.username.errors?.['usernamePattern']).toBeTruthy();
+  });
+
+  it('should accept username with letters, digits, underscores and hyphens', () => {
+    const { componentInstance: comp } = createComponent();
+    comp.form.setValue({ username: 'valid_user-01', password: 'Valid1@pass' });
+    expect(comp.username.valid).toBe(true);
+  });
+
+  // ── Password validation ──────────────────────────────────
+
+  it('should error when password is too short', () => {
+    const { componentInstance: comp } = createComponent();
+    comp.form.setValue({ username: 'validuser', password: 'Sh0rt!' });
     expect(comp.password.errors?.['minlength']).toBeTruthy();
   });
 
-  it('should be valid with correct credentials', () => {
+  it('should error when password exceeds 64 characters', () => {
     const { componentInstance: comp } = createComponent();
-    comp.form.setValue({ username: 'validuser', password: 'validpassword' });
+    comp.form.setValue({ username: 'validuser', password: 'Valid1@' + 'a'.repeat(58) });
+    expect(comp.password.errors?.['maxlength']).toBeTruthy();
+  });
+
+  it('should error when password has no uppercase letter', () => {
+    const { componentInstance: comp } = createComponent();
+    comp.form.setValue({ username: 'validuser', password: 'nouppercase1@' });
+    expect(comp.password.errors?.['hasUppercase']).toBeTruthy();
+  });
+
+  it('should error when password has no lowercase letter', () => {
+    const { componentInstance: comp } = createComponent();
+    comp.form.setValue({ username: 'validuser', password: 'NOLOWERCASE1@' });
+    expect(comp.password.errors?.['hasLowercase']).toBeTruthy();
+  });
+
+  it('should error when password has no number', () => {
+    const { componentInstance: comp } = createComponent();
+    comp.form.setValue({ username: 'validuser', password: 'NoNumber@abc' });
+    expect(comp.password.errors?.['hasNumber']).toBeTruthy();
+  });
+
+  it('should error when password has no special character', () => {
+    const { componentInstance: comp } = createComponent();
+    comp.form.setValue({ username: 'validuser', password: 'NoSpecial123' });
+    expect(comp.password.errors?.['hasSpecialChar']).toBeTruthy();
+  });
+
+  it('should be valid with a fully compliant password', () => {
+    const { componentInstance: comp } = createComponent();
+    comp.form.setValue({ username: 'validuser', password: 'Valid1@pass' });
     expect(comp.form.valid).toBe(true);
   });
+
+  // ── Submit behaviour ─────────────────────────────────────
 
   it('should mark all fields as touched when submitting an invalid form', () => {
     const { componentInstance: comp } = createComponent();
@@ -76,12 +130,12 @@ describe('LoginComponent', () => {
     authServiceMock.login.mockReturnValue(of({ token: 'tok', username: 'u', roles: [] }));
     const { componentInstance: comp } = createComponent();
 
-    comp.form.setValue({ username: 'validuser', password: 'validpassword' });
+    comp.form.setValue({ username: 'validuser', password: 'Valid1@pass' });
     comp.onSubmit();
 
     expect(authServiceMock.login).toHaveBeenCalledWith({
       username: 'validuser',
-      password: 'validpassword',
+      password: 'Valid1@pass',
     });
   });
 
@@ -89,7 +143,7 @@ describe('LoginComponent', () => {
     authServiceMock.login.mockReturnValue(of({ token: 'tok', username: 'u', roles: [] }));
     const { componentInstance: comp } = createComponent();
 
-    comp.form.setValue({ username: 'validuser', password: 'validpassword' });
+    comp.form.setValue({ username: 'validuser', password: 'Valid1@pass' });
     comp.onSubmit();
 
     expect(comp.errorMessage()).toBe('');
@@ -99,7 +153,7 @@ describe('LoginComponent', () => {
     authServiceMock.login.mockReturnValue(throwError(() => ({ status: 401 })));
     const { componentInstance: comp } = createComponent();
 
-    comp.form.setValue({ username: 'validuser', password: 'wrongpass' });
+    comp.form.setValue({ username: 'validuser', password: 'Valid1@pass' });
     comp.onSubmit();
 
     expect(comp.errorMessage()).toContain('Invalid credentials');
@@ -110,7 +164,7 @@ describe('LoginComponent', () => {
     authServiceMock.login.mockReturnValue(throwError(() => ({ status: 423 })));
     const { componentInstance: comp } = createComponent();
 
-    comp.form.setValue({ username: 'validuser', password: 'validpassword' });
+    comp.form.setValue({ username: 'validuser', password: 'Valid1@pass' });
     comp.onSubmit();
 
     expect(comp.errorMessage()).toContain('temporarily locked');
@@ -120,7 +174,7 @@ describe('LoginComponent', () => {
     authServiceMock.login.mockReturnValue(throwError(() => ({ status: 500 })));
     const { componentInstance: comp } = createComponent();
 
-    comp.form.setValue({ username: 'validuser', password: 'validpassword' });
+    comp.form.setValue({ username: 'validuser', password: 'Valid1@pass' });
     comp.onSubmit();
 
     expect(comp.errorMessage()).toContain('Unable to connect');

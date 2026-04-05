@@ -8,6 +8,15 @@ import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { LucideAngularModule, Lock, User, ShieldCheck, TrendingUp, Building2 } from 'lucide-angular';
 import { AuthService } from '../../../core/services/auth.service';
+import {
+  USERNAME_MIN, USERNAME_MAX,
+  PASSWORD_MIN, PASSWORD_MAX,
+  usernamePatternValidator,
+  hasUppercaseValidator,
+  hasLowercaseValidator,
+  hasNumberValidator,
+  hasSpecialCharValidator,
+} from '../../../shared/validators/auth.validators';
 
 @Component({
   selector: 'app-login',
@@ -31,13 +40,25 @@ export class LoginComponent {
   private readonly router = inject(Router);
 
   readonly icons = { Lock, User, ShieldCheck, TrendingUp, Building2 };
-
   readonly loading = signal(false);
   readonly errorMessage = signal('');
 
   readonly form = this.fb.group({
-    username: ['', [Validators.required, Validators.minLength(3)]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    username: ['', [
+      Validators.required,
+      Validators.minLength(USERNAME_MIN),
+      Validators.maxLength(USERNAME_MAX),
+      usernamePatternValidator,
+    ]],
+    password: ['', [
+      Validators.required,
+      Validators.minLength(PASSWORD_MIN),
+      Validators.maxLength(PASSWORD_MAX),
+      hasUppercaseValidator,
+      hasLowercaseValidator,
+      hasNumberValidator,
+      hasSpecialCharValidator,
+    ]],
   });
 
   get username() { return this.form.get('username')!; }

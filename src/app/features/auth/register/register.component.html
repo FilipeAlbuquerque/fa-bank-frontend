@@ -35,7 +35,7 @@
       </div>
     } @else {
 
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="form-fields">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate autocomplete="off" class="form-fields">
 
         <!-- Name row -->
         <div class="field-row">
@@ -44,10 +44,15 @@
             <div class="input-wrapper" [class.input-error]="form.get('firstName')!.invalid && form.get('firstName')!.touched">
               <lucide-icon [img]="icons.User" size="14" class="input-icon" />
               <input pInputText id="firstName" type="text" formControlName="firstName"
-                     placeholder="John" class="field-input" autocomplete="given-name" />
+                     placeholder="John" maxlength="50" class="field-input" autocomplete="off" />
             </div>
             @if (form.get('firstName')!.invalid && form.get('firstName')!.touched) {
-              <span class="field-error">Required</span>
+              <span class="field-error">
+                @if (form.get('firstName')!.errors?.['required']) { Required field }
+                @else if (form.get('firstName')!.errors?.['minlength']) { Minimum 2 characters }
+                @else if (form.get('firstName')!.errors?.['maxlength']) { Maximum 50 characters }
+                @else if (form.get('firstName')!.errors?.['namePattern']) { Letters, spaces, hyphens and apostrophes only }
+              </span>
             }
           </div>
 
@@ -55,10 +60,15 @@
             <label class="field-label" for="lastName">Last Name</label>
             <div class="input-wrapper" [class.input-error]="form.get('lastName')!.invalid && form.get('lastName')!.touched">
               <input pInputText id="lastName" type="text" formControlName="lastName"
-                     placeholder="Smith" class="field-input" autocomplete="family-name" />
+                     placeholder="Smith" maxlength="50" class="field-input" autocomplete="off" />
             </div>
             @if (form.get('lastName')!.invalid && form.get('lastName')!.touched) {
-              <span class="field-error">Required</span>
+              <span class="field-error">
+                @if (form.get('lastName')!.errors?.['required']) { Required field }
+                @else if (form.get('lastName')!.errors?.['minlength']) { Minimum 2 characters }
+                @else if (form.get('lastName')!.errors?.['maxlength']) { Maximum 50 characters }
+                @else if (form.get('lastName')!.errors?.['namePattern']) { Letters, spaces, hyphens and apostrophes only }
+              </span>
             }
           </div>
         </div>
@@ -69,41 +79,95 @@
           <div class="input-wrapper" [class.input-error]="form.get('email')!.invalid && form.get('email')!.touched">
             <lucide-icon [img]="icons.Mail" size="14" class="input-icon" />
             <input pInputText id="email" type="email" formControlName="email"
-                   placeholder="john.smith@example.com" class="field-input" autocomplete="email" />
+                   placeholder="john.smith@example.com" maxlength="254"
+                   class="field-input" autocomplete="off" />
           </div>
           @if (form.get('email')!.invalid && form.get('email')!.touched) {
             <span class="field-error">
               @if (form.get('email')!.errors?.['required']) { Required field }
-              @else { Invalid email address }
+              @else if (form.get('email')!.errors?.['emailFormat']) { Enter a valid email address (e.g. name@domain.com) }
             </span>
           }
         </div>
 
         <!-- Phone -->
         <div class="field-group">
-          <label class="field-label" for="phone">Phone Number</label>
-          <div class="input-wrapper" [class.input-error]="form.get('phone')!.invalid && form.get('phone')!.touched">
-            <lucide-icon [img]="icons.Phone" size="14" class="input-icon" />
-            <input pInputText id="phone" type="tel" formControlName="phone"
-                   placeholder="+1 (555) 000-0000" class="field-input" autocomplete="tel" />
+          <label class="field-label">Phone Number</label>
+          <div class="phone-field-wrapper"
+               [class.input-error]="form.get('phoneNumber')!.invalid && form.get('phoneNumber')!.touched">
+
+            <!-- Country code dropdown -->
+            <p-select
+              formControlName="countryCode"
+              [options]="countries"
+              optionLabel="name"
+              dataKey="code"
+              [filter]="true"
+              filterBy="name,dialCode"
+              styleClass="phone-country-select"
+              appendTo="body"
+              aria-label="Country code"
+            >
+              <ng-template pTemplate="selectedItem" let-c>
+                <span class="country-selected">
+                  <span class="country-flag">{{ c.flag }}</span>
+                  <span class="country-dial">{{ c.dialCode }}</span>
+                </span>
+              </ng-template>
+              <ng-template pTemplate="item" let-c>
+                <span class="country-option">
+                  <span class="country-flag">{{ c.flag }}</span>
+                  <span class="country-name">{{ c.name }}</span>
+                  <span class="country-dial-muted">{{ c.dialCode }}</span>
+                </span>
+              </ng-template>
+            </p-select>
+
+            <span class="phone-divider"></span>
+
+            <!-- Local number input -->
+            <input
+              pInputText
+              id="phoneNumber"
+              type="tel"
+              formControlName="phoneNumber"
+              placeholder="555 000 0000"
+              maxlength="15"
+              class="phone-number-input"
+              autocomplete="off"
+              (keydown)="onPhoneKeyDown($event)"
+            />
           </div>
-          @if (form.get('phone')!.invalid && form.get('phone')!.touched) {
-            <span class="field-error">Required field</span>
+          @if (form.get('phoneNumber')!.invalid && form.get('phoneNumber')!.touched) {
+            <span class="field-error">
+              @if (form.get('phoneNumber')!.errors?.['required']) { Required field }
+              @else if (form.get('phoneNumber')!.errors?.['phoneFormat']) { Enter digits only (4–15 numbers) }
+            </span>
           }
         </div>
 
         <!-- Optional message -->
         <div class="field-group">
-          <label class="field-label" for="message">
-            Message <span class="label-optional">(optional)</span>
-          </label>
+          <div class="field-label-row">
+            <label class="field-label" for="message">
+              Message <span class="label-optional">(optional)</span>
+            </label>
+            <span class="char-counter" [class.char-counter-warn]="messageLength > MESSAGE_MAX * 0.9">
+              {{ messageLength }} / {{ MESSAGE_MAX }}
+            </span>
+          </div>
           <textarea
             id="message"
             formControlName="message"
             placeholder="Tell us briefly about your banking needs..."
             class="field-textarea"
+            [class.input-error]="form.get('message')!.invalid && form.get('message')!.touched"
             rows="3"
+            [maxlength]="MESSAGE_MAX"
           ></textarea>
+          @if (form.get('message')!.invalid && form.get('message')!.touched) {
+            <span class="field-error">Maximum {{ MESSAGE_MAX }} characters</span>
+          }
         </div>
 
         <!-- Submit -->
