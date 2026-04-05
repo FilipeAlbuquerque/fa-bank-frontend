@@ -8,7 +8,7 @@ export interface Country {
 /** Generates a flag emoji from a two-letter ISO country code. */
 function flag(iso: string): string {
   return [...iso.toUpperCase()]
-    .map(c => String.fromCodePoint(c.charCodeAt(0) - 65 + 0x1F1E6))
+    .map(c => String.fromCodePoint((c.codePointAt(0) ?? 0) - 65 + 0x1F1E6))
     .join('');
 }
 

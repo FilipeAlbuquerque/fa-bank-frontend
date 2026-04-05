@@ -12,7 +12,7 @@
     </div>
     <button class="filter-toggle" (click)="filtersOpen.update(v => !v)"
             [class.filter-active]="filtersOpen()" aria-label="Toggle filters">
-      <lucide-icon [img]="icons.Filter" size="16" />
+      <lucide-icon [img]="icons.Funnel" size="16" />
       <span>Filters</span>
     </button>
   </div>
@@ -23,8 +23,8 @@
       <div class="filter-row">
 
         <div class="filter-group">
-          <label class="filter-label">Type</label>
-          <select class="filter-select" formControlName="type">
+          <label class="filter-label" for="filter-type">Type</label>
+          <select id="filter-type" class="filter-select" formControlName="type">
             @for (opt of txTypes; track opt.value) {
               <option [value]="opt.value">{{ opt.label }}</option>
             }
@@ -32,13 +32,13 @@
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">From</label>
-          <input class="filter-input" type="date" formControlName="startDate" />
+          <label class="filter-label" for="filter-start">From</label>
+          <input id="filter-start" class="filter-input" type="date" formControlName="startDate" />
         </div>
 
         <div class="filter-group">
-          <label class="filter-label">To</label>
-          <input class="filter-input" type="date" formControlName="endDate" />
+          <label class="filter-label" for="filter-end">To</label>
+          <input id="filter-end" class="filter-input" type="date" formControlName="endDate" />
         </div>
 
         <button class="filter-reset" (click)="resetFilters()">Clear</button>

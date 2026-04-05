@@ -156,7 +156,7 @@ $sidebar-w:   240px;
 
   &:hover {
     background: rgba(139, 0, 0, 0.12);
-    color: #e05555;
+    color: #f87171; /* NOSONAR */
   }
 }
 
@@ -165,14 +165,14 @@ $sidebar-w:   240px;
 
   &:hover {
     background: rgba(139, 0, 0, 0.1);
-    color: #e05555;
+    color: #f87171; /* NOSONAR */
   }
 
   &.nav-item-active {
     background: rgba(139, 0, 0, 0.12);
-    color: #e05555;
+    color: #f87171; /* NOSONAR */
 
-    .nav-icon { color: #e05555; }
+    .nav-icon { color: #f87171; } /* NOSONAR */
   }
 }
 

@@ -82,9 +82,11 @@ export class OverviewComponent implements OnInit {
   }
 
   accountLabel(account: Account): string {
-    return account.type === 'CHECKING' ? 'Checking Account' :
-           account.type === 'SAVINGS'  ? 'Savings Account'  :
-           account.type;
+    const labels: Record<string, string> = {
+      CHECKING: 'Checking Account',
+      SAVINGS: 'Savings Account',
+    };
+    return labels[account.type] ?? account.type;
   }
 
   accountIcon(type: AccountType): LucideIconData {
@@ -93,7 +95,7 @@ export class OverviewComponent implements OnInit {
 
   maskedNumber(accountNumber: string): string {
     if (!this.visibility.valuesVisible()) return '•••• •••• ••••';
-    return accountNumber.replace(/(\d{4})(?=\d)/g, '$1 ');
+    return accountNumber.replaceAll(/(\d{4})(?=\d)/g, '$1 ');
   }
 
   txIsCredit(tx: Transaction): boolean {

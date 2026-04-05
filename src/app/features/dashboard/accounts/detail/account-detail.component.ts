@@ -6,7 +6,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {
   LucideAngularModule, LucideIconData,
   ArrowLeft, ArrowDownLeft, ArrowUpRight, ArrowLeftRight,
-  ChevronLeft, ChevronRight, Filter,
+  ChevronLeft, ChevronRight, Funnel,
 } from 'lucide-angular';
 import { AccountService } from '../../../../core/services/account.service';
 import { VisibilityService } from '../../../../core/services/visibility.service';
@@ -25,7 +25,7 @@ export class AccountDetailComponent implements OnInit {
   private readonly fb             = inject(FormBuilder);
   readonly visibility             = inject(VisibilityService);
 
-  readonly icons = { ArrowLeft, ArrowDownLeft, ArrowUpRight, ArrowLeftRight, ChevronLeft, ChevronRight, Filter };
+  readonly icons = { ArrowLeft, ArrowDownLeft, ArrowUpRight, ArrowLeftRight, ChevronLeft, ChevronRight, Funnel };
 
   readonly accountNumber = signal('');
   readonly transactions  = signal<Transaction[]>([]);
