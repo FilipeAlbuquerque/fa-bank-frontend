@@ -98,47 +98,73 @@
             formControlName="destinationAccountNumber"
             placeholder="Enter destination account number"
             autocomplete="off"
+            [maxlength]="ACCOUNT_MAX"
             [class.field-error]="form.get('destinationAccountNumber')!.invalid && form.get('destinationAccountNumber')!.touched"
           />
           @if (form.get('destinationAccountNumber')!.invalid && form.get('destinationAccountNumber')!.touched) {
-            <span class="field-error-msg">Please enter a valid account number.</span>
+            @if (form.get('destinationAccountNumber')!.errors?.['required']) {
+              <span class="field-error-msg">Account number is required.</span>
+            } @else if (form.get('destinationAccountNumber')!.errors?.['minlength']) {
+              <span class="field-error-msg">Account number must be at least 5 characters.</span>
+            } @else {
+              <span class="field-error-msg">Account number must not exceed {{ ACCOUNT_MAX }} characters.</span>
+            }
           }
         </div>
 
         <!-- Amount -->
         <div class="field-group">
           <label class="field-label" for="amount">Amount (EUR)</label>
-          <div class="amount-wrapper">
+          <div class="amount-wrapper" [class.amount-warning]="exceedsBalance()"
+               [class.amount-error]="form.get('amount')!.invalid && form.get('amount')!.touched">
             <span class="amount-prefix">€</span>
             <input
               id="amount"
-              type="number"
+              type="text"
+              inputmode="decimal"
               class="field-input amount-input"
               formControlName="amount"
               placeholder="0.00"
-              min="0.01"
-              step="0.01"
-              [class.field-error]="form.get('amount')!.invalid && form.get('amount')!.touched"
+              autocomplete="off"
             />
           </div>
           @if (sourceBalance() !== null && visibility.valuesVisible()) {
-            <span class="balance-hint">Available: {{ sourceBalance() | number:'1.2-2' }} EUR</span>
+            <span class="balance-hint" [class.balance-warning]="exceedsBalance()">
+              Available: {{ sourceBalance() | number:'1.2-2' }} EUR
+            </span>
           }
-          @if (form.get('amount')!.invalid && form.get('amount')!.touched) {
-            <span class="field-error-msg">Please enter a valid amount greater than 0.</span>
+          @if (exceedsBalance()) {
+            <span class="field-warning-msg">
+              Insufficient balance — you have {{ sourceBalance() | number:'1.2-2' }} EUR available.
+            </span>
+          } @else if (form.get('amount')!.invalid && form.get('amount')!.touched) {
+            @if (form.get('amount')!.errors?.['required']) {
+              <span class="field-error-msg">Amount is required.</span>
+            } @else if (form.get('amount')!.errors?.['invalidAmount']) {
+              <span class="field-error-msg">Invalid amount. Examples: 1000, 1500.99, 1.000,00</span>
+            } @else if (form.get('amount')!.errors?.['min']) {
+              <span class="field-error-msg">Amount must be greater than 0.</span>
+            } @else {
+              <span class="field-error-msg">Amount must not exceed {{ AMOUNT_MAX | number:'1.2-2' }} EUR.</span>
+            }
           }
         </div>
 
         <!-- Description -->
         <div class="field-group">
-          <label class="field-label" for="description">Description <span class="optional">(optional)</span></label>
+          <div class="field-label-row">
+            <label class="field-label" for="description">Description <span class="optional">(optional)</span></label>
+            <span class="char-counter" [class.char-counter-warn]="descLength() > DESC_MAX * 0.9">
+              {{ descLength() }} / {{ DESC_MAX }}
+            </span>
+          </div>
           <input
             id="description"
             type="text"
             class="field-input"
             formControlName="description"
             placeholder="e.g. Rent, Invoice #123"
-            maxlength="100"
+            [maxlength]="DESC_MAX"
           />
         </div>
 
@@ -146,7 +172,7 @@
         <button
           class="btn-primary"
           type="submit"
-          [disabled]="form.invalid || submitting()"
+          [disabled]="form.invalid || submitting() || exceedsBalance()"
         >
           @if (submitting()) {
             <div class="btn-spinner"></div>

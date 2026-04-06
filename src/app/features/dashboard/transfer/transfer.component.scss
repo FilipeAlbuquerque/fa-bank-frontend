@@ -237,9 +237,21 @@ form {
   &.field-error { border-color: transparent; }
 }
 
+.amount-wrapper {
+  &.amount-error  { border-color: rgba(248, 113, 113, 0.5); }
+  &.amount-warning { border-color: rgba(251, 191, 36, 0.5); }
+}
+
 .balance-hint {
   font-size: 0.75rem;
   color: $text-muted;
+
+  &.balance-warning { color: #fbbf24; } /* NOSONAR */
+}
+
+.field-warning-msg {
+  font-size: 0.75rem;
+  color: #fbbf24; /* NOSONAR */
 }
 
 // ── PrimeNG select overrides ──────────────────────────────
