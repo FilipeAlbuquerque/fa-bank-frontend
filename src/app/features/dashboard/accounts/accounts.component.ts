@@ -1,7 +1,7 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { LucideAngularModule, LucideIconData, CreditCard, PiggyBank, TrendingUp, ChevronRight, RefreshCw } from 'lucide-angular';
+import { LucideAngularModule, LucideIconData, CreditCard, PiggyBank, TrendingUp, ChevronRight, RefreshCw, Copy, Check } from 'lucide-angular';
 import { AccountService } from '../../../core/services/account.service';
 import { VisibilityService } from '../../../core/services/visibility.service';
 import { Account, AccountType } from '../../../core/models/account.model';
@@ -18,7 +18,9 @@ export class AccountsComponent implements OnInit {
   private readonly router         = inject(Router);
   readonly visibility             = inject(VisibilityService);
 
-  readonly icons = { CreditCard, PiggyBank, TrendingUp, ChevronRight, RefreshCw };
+  readonly icons = { CreditCard, PiggyBank, TrendingUp, ChevronRight, RefreshCw, Copy, Check };
+
+  readonly copiedIban = signal<string | null>(null);
 
   readonly accounts = signal<Account[]>([]);
   readonly loading  = signal(true);
@@ -79,5 +81,13 @@ export class AccountsComponent implements OnInit {
   maskedIban(iban: string): string {
     if (!this.visibility.valuesVisible()) return 'PT•• •••• •••• •••• •••• ••••';
     return iban;
+  }
+
+  copyIban(iban: string, event: Event): void {
+    event.stopPropagation();
+    navigator.clipboard.writeText(iban.replaceAll(' ', '')).then(() => {
+      this.copiedIban.set(iban);
+      setTimeout(() => this.copiedIban.set(null), 2000);
+    });
   }
 }

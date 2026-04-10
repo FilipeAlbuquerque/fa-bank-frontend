@@ -57,47 +57,68 @@
   @if (!loading() && accounts().length > 0) {
     <div class="accounts-list">
       @for (account of accounts(); track account.id) {
-        <button class="account-card" (click)="openDetail(account)"
-                [attr.aria-label]="'Open ' + typeLabel(account.type) + ' account details'"
-                type="button">
 
-          <div class="account-card-left">
-            <div class="account-icon" [class]="'account-icon-' + account.type.toLowerCase()">
-              <lucide-icon [img]="accountIcon(account.type)" size="20" />
-            </div>
-            <div class="account-info">
-              <span class="account-type">{{ typeLabel(account.type) }}</span>
-              <span class="account-number">{{ maskedNumber(account.accountNumber) }}</span>
-              <span class="account-iban">{{ maskedIban(account.iban) }}</span>
-              <span class="account-status" [class]="'status-' + account.status.toLowerCase()">
-                {{ account.status }}
-              </span>
-            </div>
-          </div>
+        <!-- Card container (div to allow sibling buttons inside) -->
+        <div class="account-card">
 
-          <div class="account-card-right">
-            <div class="account-balance">
-              @if (visibility.valuesVisible()) {
-                <span class="balance-amount">{{ account.balance | number:'1.2-2' }}</span>
-                <span class="balance-currency">EUR</span>
-              } @else {
-                <span class="masked">••••••</span>
-              }
+          <!-- Main area — navigates to detail -->
+          <button class="account-card-main" (click)="openDetail(account)"
+                  [attr.aria-label]="'Open ' + typeLabel(account.type) + ' account details'"
+                  type="button">
+
+            <div class="account-card-left">
+              <div class="account-icon" [class]="'account-icon-' + account.type.toLowerCase()">
+                <lucide-icon [img]="accountIcon(account.type)" size="20" />
+              </div>
+              <div class="account-info">
+                <span class="account-type">{{ typeLabel(account.type) }}</span>
+                <span class="account-number">{{ maskedNumber(account.accountNumber) }}</span>
+                <div class="account-iban-row">
+                  <span class="account-iban">{{ maskedIban(account.iban) }}</span>
+                  @if (visibility.valuesVisible()) {
+                    <button class="copy-iban-btn"
+                            (click)="copyIban(account.iban, $event)"
+                            type="button"
+                            [attr.aria-label]="copiedIban() === account.iban ? 'IBAN copied' : 'Copy IBAN'"
+                            [class.copied]="copiedIban() === account.iban">
+                      <lucide-icon
+                        [img]="copiedIban() === account.iban ? icons.Check : icons.Copy"
+                        size="11" />
+                    </button>
+                  }
+                </div>
+                <span class="account-status" [class]="'status-' + account.status.toLowerCase()">
+                  {{ account.status }}
+                </span>
+              </div>
             </div>
-            @if (account.availableLimit !== null) {
-              <span class="available-limit">
-                Limit:
+
+            <div class="account-card-right">
+              <div class="account-balance">
                 @if (visibility.valuesVisible()) {
-                  {{ account.availableLimit | number:'1.2-2' }} EUR
+                  <span class="balance-amount">{{ account.balance | number:'1.2-2' }}</span>
+                  <span class="balance-currency">EUR</span>
                 } @else {
-                  ••••••
+                  <span class="masked">••••••</span>
                 }
-              </span>
-            }
-            <lucide-icon [img]="icons.ChevronRight" size="16" class="chevron" />
-          </div>
+              </div>
+              @if (account.availableLimit !== null) {
+                <span class="available-limit">
+                  Limit:
+                  @if (visibility.valuesVisible()) {
+                    {{ account.availableLimit | number:'1.2-2' }} EUR
+                  } @else {
+                    ••••••
+                  }
+                </span>
+              }
+              <lucide-icon [img]="icons.ChevronRight" size="16" class="chevron" />
+            </div>
 
-        </button>
+          </button>
+
+        </div>
+
       }
     </div>
   }

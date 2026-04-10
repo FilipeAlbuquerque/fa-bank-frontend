@@ -204,6 +204,30 @@ $border:     rgba(201, 162, 39, 0.18);
 }
 
 .account-card {
+  background: $surface-2;
+  border: 1px solid $border;
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 1.5rem; right: 1.5rem; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,162,39,0.2), transparent);
+    pointer-events: none;
+  }
+
+  &:has(.account-card-main:hover),
+  &:has(.account-card-main:focus-visible) {
+    border-color: rgba(201, 162, 39, 0.4);
+    background: $surface-3;
+    transform: translateY(-1px);
+  }
+}
+
+.account-card-main {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -211,27 +235,12 @@ $border:     rgba(201, 162, 39, 0.18);
   text-align: left;
   font: inherit;
   padding: 1.25rem 1.5rem;
-  background: $surface-2;
-  border: 1px solid $border;
-  border-radius: 14px;
+  background: none;
+  border: none;
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s, transform 0.15s;
   outline: none;
-  position: relative;
-  overflow: hidden;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 1.5rem; right: 1.5rem; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201,162,39,0.2), transparent);
-  }
-
-  &:hover, &:focus-visible {
-    border-color: rgba(201, 162, 39, 0.4);
-    background: $surface-3;
-    transform: translateY(-1px);
-  }
+  &:focus-visible { outline: 2px solid rgba(201, 162, 39, 0.5); outline-offset: -2px; border-radius: 14px; }
 }
 
 .account-card-left {
@@ -277,12 +286,40 @@ $border:     rgba(201, 162, 39, 0.18);
   letter-spacing: 0.05em;
 }
 
+.account-iban-row {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
 .account-iban {
   font-size: 0.72rem;
   color: $text-muted;
   font-family: 'Courier New', monospace;
   letter-spacing: 0.03em;
   opacity: 0.75;
+}
+
+.copy-iban-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: $text-muted;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s, background 0.15s;
+  flex-shrink: 0;
+
+  .account-card:hover & { opacity: 1; }
+
+  &:hover { color: $gold; background: rgba(201, 162, 39, 0.1); }
+
+  &.copied { opacity: 1; color: #86efac; }
 }
 
 .account-status {
@@ -340,7 +377,7 @@ $border:     rgba(201, 162, 39, 0.18);
   color: $text-muted;
   transition: color 0.2s, transform 0.2s;
 
-  .account-card:hover & {
+  .account-card:has(.account-card-main:hover) & {
     color: $gold;
     transform: translateX(2px);
   }

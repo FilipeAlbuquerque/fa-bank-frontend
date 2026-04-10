@@ -50,9 +50,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/dashboard/admin/admin.component').then((m) => m.AdminComponent),
       },
+      {
+        path: 'transfer',
+        loadComponent: () =>
+          import('./features/dashboard/transfer/transfer.component').then((m) => m.TransferComponent),
+      },
       // Future child routes:
-      // { path: 'transfer', ... }
-      // { path: 'profile',  ... }
+      // { path: 'profile', ... }
     ],
   },
   {

@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Account, Transaction, Statement, Page } from '../models/account.model';
+import { Account, Transaction, Statement, Page, TransferRequest } from '../models/account.model';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -36,6 +36,11 @@ export class AccountService {
       `${this.baseUrl}/transactions/account/${accountNumber}/paginated`,
       { params }
     );
+  }
+
+  /** Transfers an amount between two accounts. */
+  transfer(dto: TransferRequest): Observable<Transaction> {
+    return this.http.post<Transaction>(`${this.baseUrl}/transactions/transfer`, dto);
   }
 
   /** Returns a statement for an account between two ISO date-time strings. */
